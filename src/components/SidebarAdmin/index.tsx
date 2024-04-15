@@ -48,7 +48,7 @@ const SidebarAdmin = () => {
 
   return (
     <div
-      className={cn("col-span-1 space-y-5 py-2 px-3 bg-slate-400 h-full", {
+      className={cn("space-y-5 py-2 px-3 bg-slate-400 min-h-screen w-1/4", {
         "w-fit": check,
       })}
     >

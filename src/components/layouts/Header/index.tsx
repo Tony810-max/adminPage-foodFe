@@ -12,10 +12,12 @@ import { IUser } from "@/types/common";
 import { ROUTERS } from "@/types/routers";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Header = () => {
   const [user, setUser] = useState<IUser>();
+  const router = useRouter();
   useEffect(() => {
     if (typeof window !== "undefined" && localStorage) {
       const userStorage = localStorage.getItem("user")
@@ -27,6 +29,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
+    router.push("/login");
   };
 
   return (

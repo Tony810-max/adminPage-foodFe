@@ -4,7 +4,7 @@ import React from "react";
 
 const layoutAdmin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <div className="grid grid-cols-5 gap-4 py-10 px-5 min-h-screen">
+    <div className="flex gap-4 py-10 px-5 min-h-screen">
       <SidebarAdmin />
       <div className="col-span-4 flex flex-col w-full h-full">
         <Header />
