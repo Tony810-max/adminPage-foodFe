@@ -1,39 +1,37 @@
-"use client"
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+"use client";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useMemo } from "react";
+import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/navigation";
-
-const inter = Inter({ subsets: ["latin"] });
-
-
+import "./globals.css";
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   const router = useRouter();
   const user = useMemo(() => {
-    const user = localStorage.getItem("user");
-    const accessToken = localStorage.getItem("accessToken");
-    if (user && accessToken) {
-      return user;
+    if (typeof localStorage !== "undefined") {
+      const user = localStorage.getItem("user");
+      const accessToken = localStorage.getItem("accessToken");
+      if (user && accessToken) {
+        return user;
+      }
     }
     return null;
   }, []);
 
   useEffect(() => {
     if (user) {
-      router.push("/");
+      router.push("/admin");
+    } else {
+      router.push("/login");
     }
   }, [router, user]);
   return (
     <html lang="en">
-      <ToastContainer />
-      <body className={inter.className}>{children}</body>
+      <body>
+        <ToastContainer />
+        {children}
+      </body>
     </html>
   );
 }

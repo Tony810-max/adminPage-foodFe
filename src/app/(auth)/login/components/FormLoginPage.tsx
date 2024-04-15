@@ -37,13 +37,12 @@ const FormLoginPage = () => {
           );
           toast.success("login successfully");
           setTimeout(() => {
-            router.push("/");
+            router.push("/admin");
           }, 3000);
         }
         if (!check) {
           toast.error("you are not an admin");
         }
-        console.log(response);
       }
     } catch (error) {
       console.log(error);
