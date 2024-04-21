@@ -4,42 +4,36 @@ import Link from "next/link";
 import React from "react";
 
 type sidebarItem = {
+  name: string;
+  to: string;
   id: number;
-  href: string;
-  Icon: JSX.Element;
-  title: string;
+  icon: JSX.Element;
 };
 
 interface originSidebarAdmin {
   data: sidebarItem[];
-  active: number;
-  onSetActive: (value: number) => void;
+  idFocus: number;
+  onSetIdFocus: (value: number) => void;
 }
 
 const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
   data,
-  active,
-  onSetActive,
+  idFocus,
+  onSetIdFocus,
 }) => {
   return (
     <div className="flex flex-col gap-2">
       {data?.map((item) => (
-        <Link
-          href={item?.href}
-          key={item?.id}
-          onClick={() => onSetActive(item?.id)}
-        >
+        <Link href={item?.to} key={item?.id}>
           <Button
             variant={"outline"}
-            className={cn("w-full flex justify-between ", {
-              "bg-red-400 text-white": active === item?.id,
+            className={cn("w-full flex gap-3 justify-between ", {
+              "bg-orange-500 text-white": idFocus === item?.id,
             })}
+            onClick={() => onSetIdFocus(item?.id)}
           >
-            {item?.Icon}
-            <span className="font-sans text-base capitalize">
-              {" "}
-              {item?.title}
-            </span>
+            {item?.icon}
+            <span className="font-sans text-base capitalize">{item?.name}</span>
           </Button>
         </Link>
       ))}

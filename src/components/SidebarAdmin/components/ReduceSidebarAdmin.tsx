@@ -2,40 +2,42 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
+import { AnimatePresence, motion, useCycle } from "framer-motion";
 
 type sidebarItem = {
+  name: string;
+  to: string;
   id: number;
-  href: string;
-  Icon: JSX.Element;
-  title: string;
+  icon: JSX.Element;
 };
 
 interface ReduceSidebarAdmin {
   data: sidebarItem[];
-  active: number;
-  onSetActive: (value: number) => void;
+  idFocus: number;
+  onSetIdFocus: (value: number) => void;
 }
 
 const ReduceSidebarAdmin: React.FC<ReduceSidebarAdmin> = ({
   data,
-  active,
-  onSetActive,
+  idFocus,
+  onSetIdFocus,
 }) => {
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 min-w-3">
       {data?.map((item) => (
         <Link
-          href={item?.href}
+          href={item?.to}
           key={item?.id}
-          onClick={() => onSetActive(item?.id)}
+          // variants={itemVariants}
         >
           <Button
             variant={"outline"}
             className={cn("w-full flex justify-between ", {
-              "bg-red-400 text-white": active === item?.id,
+              "bg-orange-500 text-white": idFocus === item?.id,
             })}
+            onClick={() => onSetIdFocus(item?.id)}
           >
-            {item?.Icon}
+            {item?.icon}
           </Button>
         </Link>
       ))}

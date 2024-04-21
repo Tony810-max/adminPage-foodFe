@@ -1,82 +1,91 @@
 "use client";
-import React, { useState } from "react";
 
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   AlignJustify,
-  Layers3,
-  LayoutDashboard,
-  PackageSearch,
+  ClipboardList,
+  HomeIcon,
+  Package2,
+  SquareArrowRight,
   User,
 } from "lucide-react";
-
-import { ROUTERS } from "@/types/routers";
-
+import { iconContainerVariants, itemVariants } from "./types/const";
 import OriginSidebarAdmin from "./components/OriginSidebarAdmin";
 import ReduceSidebarAdmin from "./components/ReduceSidebarAdmin";
-import { cn } from "@/lib/utils";
 
 const DATA_SIDEBAR_ADMIN = [
+  { name: "Home", to: "/admin", id: 1, icon: <HomeIcon /> },
   {
-    id: 1,
-    title: "dashboard",
-    href: ROUTERS.DASHBOARD,
-    Icon: <LayoutDashboard />,
-  },
-  {
+    name: "Category",
+    to: "/admin/pages/category",
     id: 2,
-    title: "product",
-    href: ROUTERS.PRODUCT,
-    Icon: <PackageSearch />,
+    icon: <ClipboardList />,
   },
-  {
-    id: 3,
-    title: "category",
-    href: ROUTERS.CATEGORY,
-    Icon: <Layers3 />,
-  },
-  {
-    id: 4,
-    title: "user",
-    href: ROUTERS.USER,
-    Icon: <User />,
-  },
+  { name: "Product", to: "/admin/pages/product", id: 3, icon: <Package2 /> },
+  { name: "User", to: "/admin/pages/user", id: 4, icon: <User /> },
 ];
 
-const SidebarAdmin = () => {
-  const [active, setActive] = useState<number>(1);
-  const [check, setCheck] = useState(false);
+export default function App() {
+  const [opened, setOpened] = useState(false);
+  const [idFocus, setIdFocus] = useState<number>(1);
+  const handleClick = () => {
+    setOpened(!opened);
+  };
 
   return (
-    <div
-      className={cn("space-y-5 py-2 px-3 bg-slate-400 min-h-screen w-1/4", {
-        "w-fit": check,
-      })}
-    >
-      <div className="flex justify-between items-center gap-5">
-        <span className="font-sans text-white text-lg uppercase font-bold">
-          Admin
-        </span>
-        <AlignJustify
-          color="white"
-          onClick={() => setCheck(!check)}
-          className="cursor-pointer hover:opacity-70"
-        />
-      </div>
-      {!check ? (
-        <OriginSidebarAdmin
-          data={DATA_SIDEBAR_ADMIN}
-          active={active}
-          onSetActive={setActive}
-        />
-      ) : (
-        <ReduceSidebarAdmin
-          data={DATA_SIDEBAR_ADMIN}
-          active={active}
-          onSetActive={setActive}
-        />
-      )}
-    </div>
+    <main>
+      <AnimatePresence>
+        {opened && (
+          <motion.aside
+            initial={{ width: 80 }}
+            animate={{
+              width: 300,
+            }}
+            exit={{
+              width: 80,
+              transition: { duration: 0.1 },
+            }}
+          >
+            <motion.div
+              className="container bg-yellow-200 flex flex-col py-4 items-start"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={itemVariants}
+            >
+              <button className="self-end" onClick={handleClick}>
+                <AlignJustify />
+              </button>
+              <OriginSidebarAdmin
+                data={DATA_SIDEBAR_ADMIN}
+                idFocus={idFocus}
+                onSetIdFocus={setIdFocus}
+              />
+            </motion.div>
+          </motion.aside>
+        )}
+        <div className="btn-container bg-yellow-200 min-w-20 min-h-screen">
+          {!opened && (
+            <motion.div
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={iconContainerVariants}
+              className="p-3"
+            >
+              <button onClick={handleClick} className="">
+                <SquareArrowRight />
+              </button>
+              <ReduceSidebarAdmin
+                 data={DATA_SIDEBAR_ADMIN}
+                 idFocus={idFocus}
+                 onSetIdFocus={setIdFocus}
+              />
+            </motion.div>
+          )}
+        </div>
+      </AnimatePresence>
+    </main>
   );
-};
-
-export default SidebarAdmin;
+}
