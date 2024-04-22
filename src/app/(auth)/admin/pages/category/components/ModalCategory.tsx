@@ -1,22 +1,70 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useCategory } from "@/hook/useCategory";
+
+const schema = yup
+  .object()
+  .shape({
+    title: yup.string().required(),
+    description: yup.string().required(),
+  })
+  .required();
 
 const ModalCategory = () => {
+  const { onHandleSubmit } = useCategory();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   return (
-    <form className="grid gap-4 py-4">
-      <div className="grid grid-cols-4 items-center gap-4">
-        <label htmlFor="name" className="text-right">
-          Name
+    <form
+      className="flex flex-col gap-4 py-4"
+      onSubmit={handleSubmit((data) => onHandleSubmit(data))}
+    >
+      <div className="space-y-2">
+        <label
+          htmlFor="title"
+          className="text-right font-sans text-lg capitalize font-bold"
+        >
+          title
         </label>
-        <Input id="name" defaultValue="Pedro Duarte" className="col-span-3" />
+        <Input
+          {...register("title")}
+          id="title"
+          placeholder="please enter title"
+        />
+        {errors.title?.message && (
+          <p className="font-sans text-base leading-normal italic text-red-500 capitalize">
+            {errors.title?.message}
+          </p>
+        )}
       </div>
-      <div className="grid grid-cols-4 items-center gap-4">
-        <label htmlFor="username" className="text-right">
-          Username
+      <div className="space-y-2">
+        <label
+          htmlFor="description"
+          className="text-right font-sans text-lg capitalize font-bold nor"
+        >
+          description
         </label>
-        <Input id="username" defaultValue="@peduarte" className="col-span-3" />
+        <Input
+          {...register("description")}
+          id="description"
+          placeholder="please enter description"
+        />
       </div>
+      {errors.description?.message && (
+        <p className="font-sans text-base leading-normal italic text-red-500 capitalize">
+          {errors.description?.message}
+        </p>
+      )}
       <div className="flex justify-end">
         <Button type="submit">Save changes</Button>
       </div>

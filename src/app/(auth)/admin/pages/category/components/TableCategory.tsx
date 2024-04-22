@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import React from "react";
 
 const TableCategory = () => {
-  const { dataCategory } = useCategory();
+  const { dataCategory, handleDeleteCategory } = useCategory();
   return (
     <table className="w-full border-collapse border border-slate-400">
       <thead>
@@ -36,7 +36,12 @@ const TableCategory = () => {
               {format(new Date(item?.updatedAt), "yyyy-MM-dd hh:mm:ss")}
             </td>
             <td className="py-4 border border-slate-300 text-center space-x-2">
-              <Button variant={"destructive"}>Delete</Button>
+              <Button
+                variant={"destructive"}
+                onClick={() => handleDeleteCategory(item?.id)}
+              >
+                Delete
+              </Button>
               <Button variant={"outline"}>Update</Button>
             </td>
           </tr>

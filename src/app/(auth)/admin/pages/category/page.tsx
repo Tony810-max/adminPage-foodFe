@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,8 +12,10 @@ import { CirclePlus } from "lucide-react";
 import React from "react";
 import TableCategory from "./components/TableCategory";
 import ModalCategory from "./components/ModalCategory";
+import { useCategory } from "@/hook/useCategory";
 
 const CategoryPage = () => {
+  const {fetchCategory} = useCategory();
   return (
     <div className="space-y-3">
       <Dialog>
@@ -31,10 +32,7 @@ const CategoryPage = () => {
               Make changes to category. Click save when you`re done.
             </DialogDescription>
           </DialogHeader>
-
           <ModalCategory />
-
-          
         </DialogContent>
       </Dialog>
       <TableCategory />
