@@ -66,7 +66,13 @@ const ModalCategory = () => {
         </p>
       )}
       <div className="flex justify-end">
-        <Button type="submit">Save changes</Button>
+        <Button
+          variant={"destructive"}
+          type="submit"
+          className="font-sans text-lg font-bold capitalize"
+        >
+          add category
+        </Button>
       </div>
     </form>
   );

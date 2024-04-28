@@ -18,7 +18,6 @@ const useUser = () => {
         },
       });
       if (response) {
-        // console.log(response?.data);
         setDataUser(response.data);
       }
     } catch (error) {

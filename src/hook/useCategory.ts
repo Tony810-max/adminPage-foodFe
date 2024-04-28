@@ -10,8 +10,9 @@ type dataAddCategory = {
   description: string;
 };
 
-export const useCategory = () => {
+export const useCategory = (idUpdate?: number) => {
   const [dataCategory, setDataCategory] = useState<ICategory[]>([]);
+
   const fetchCategory = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/category`);
@@ -58,6 +59,29 @@ export const useCategory = () => {
     }
   };
 
+  const onHandleSubmitUpdate = async (data: dataAddCategory) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
+      if (!accessToken) {
+        return;
+      }
+      const response = await axios.patch(
+        `${API_URL}/api/v1/category/${idUpdate}`,
+        {
+          title: data.title,
+          description: data.description,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      if (response) {
+        toast.success("Update category successfully");
+        fetchCategory();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchCategory();
   }, []);
@@ -67,5 +91,6 @@ export const useCategory = () => {
     fetchCategory,
     handleDeleteCategory,
     onHandleSubmit,
+    onHandleSubmitUpdate,
   };
 };

@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,9 +14,10 @@ import React from "react";
 import TableCategory from "./components/TableCategory";
 import ModalCategory from "./components/ModalCategory";
 import { useCategory } from "@/hook/useCategory";
+import { Input } from "@/components/ui/input";
 
 const CategoryPage = () => {
-  const {fetchCategory} = useCategory();
+  const { fetchCategory } = useCategory();
   return (
     <div className="space-y-3">
       <Dialog>
@@ -35,6 +37,7 @@ const CategoryPage = () => {
           <ModalCategory />
         </DialogContent>
       </Dialog>
+      
       <TableCategory />
     </div>
   );

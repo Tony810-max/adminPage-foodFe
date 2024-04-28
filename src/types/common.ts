@@ -40,3 +40,12 @@ export interface IProduct {
   reviewCount: string;
   avgRating: null | number;
 }
+
+export type AddProduct = {
+  title: string;
+  description: string;
+  price: number;
+  stock: number;
+  images: string[];
+  categoryId: number;
+};

@@ -1,4 +1,4 @@
-import { API_URL, IProduct } from "@/types/common";
+import { API_URL, AddProduct, IProduct } from "@/types/common";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -31,9 +31,29 @@ const useProduct = () => {
     }
   };
 
+  const handleAddProduct = async (productData: AddProduct) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
+
+      const response = await axios.post(
+        `${API_URL}/api/v1/products`,
+        productData,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+
+      if (response) {
+        toast.success("Product added successfully");
+        fetchProduct();
+      }
+    } catch (error) {
+      console.error("Error in handleAddProduct:", error);
+      toast.error("Failed to add product");
+    }
+  };
+
   useEffect(() => {
     fetchProduct();
   }, []);
-  return { dataProduct, handleDeleteProduct };
+  return { dataProduct, fetchProduct, handleDeleteProduct, handleAddProduct };
 };
 export default useProduct;

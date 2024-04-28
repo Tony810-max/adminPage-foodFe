@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
+
 import { useCategory } from "@/hook/useCategory";
 import { format } from "date-fns";
 import React from "react";
+import DialogUpdateCategory from "./DialogUpdateCategory";
 
 const TableCategory = () => {
   const { dataCategory, handleDeleteCategory } = useCategory();
@@ -42,7 +44,11 @@ const TableCategory = () => {
               >
                 Delete
               </Button>
-              <Button variant={"outline"}>Update</Button>
+              <DialogUpdateCategory
+                id={item?.id}
+                tittleDefault={item?.title}
+                desDefault={item?.description}
+              />
             </td>
           </tr>
         ))}
