@@ -25,7 +25,9 @@ const DialogUpdateCategory: React.FC<dialogUpdateProps> = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Update</Button>
+        <Button variant="outline" className="font-sans text-base">
+          Update
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -1,13 +1,12 @@
 import React from "react";
 
 import TableProduct from "./components/TableProduct";
-import DialogProduct from "./components/DialogProduct";
-
+import DialogAddProduct from "./components/AddProduct/DialogAddProduct";
 
 const ProductPage = () => {
   return (
     <div className="space-y-3">
-      <DialogProduct />
+      <DialogAddProduct />
       <TableProduct />
     </div>
   );

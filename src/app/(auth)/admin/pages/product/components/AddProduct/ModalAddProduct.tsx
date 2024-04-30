@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCategory } from "@/hook/useCategory";
 import useProduct from "@/hook/useProduct";
 
-import { productSchema } from "../types/common";
+import { productSchema } from "../../types/common";
 import { ICategory } from "@/types/common";
 
 import {
@@ -19,16 +19,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import InputFieldProduct from "./InputFieldProduct";
+import InputFieldProduct from "../InputFieldProduct";
 
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const ModalDiaglogProduct = () => {
+const ModalAddProduct = () => {
   const [file, setFile] = useState<FileList | null>(null);
 
-  const { handleAddProduct } = useProduct();
+  const { handleAddProduct, uploadImage } = useProduct();
   const { dataCategory } = useCategory();
 
   const {
@@ -39,23 +39,6 @@ const ModalDiaglogProduct = () => {
   } = useForm({
     resolver: yupResolver(productSchema),
   });
-
-  const uploadImage = async (file: FileList) => {
-    const CLOUD_NAME = "dehamgr2z";
-    const PRESET_NAME = "pn5guixu";
-    const FOLDER_NAME = "image_FoodFe";
-    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
-
-    const uploadPromises = Array.from(file).map((file) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", FOLDER_NAME);
-      formData.append("upload_preset", PRESET_NAME);
-      return axios.post(url, formData).then((response) => response.data.url);
-    });
-
-    return Promise.all(uploadPromises);
-  };
 
   const onSubmit = async (data: any) => {
     let images = [];
@@ -74,7 +57,6 @@ const ModalDiaglogProduct = () => {
       images: images,
     };
 
-    // Sử dụng hàm handleAddProduct từ hook useProduct để xử lý thêm sản phẩm
     await handleAddProduct(productData);
   };
 
@@ -151,7 +133,6 @@ const ModalDiaglogProduct = () => {
             const files = e.target.files;
             if (files && files?.length > 0) {
               setFile(files);
-              console.log("day la filelist:", files);
             }
           }}
           multiple
@@ -166,4 +147,4 @@ const ModalDiaglogProduct = () => {
   );
 };
 
-export default ModalDiaglogProduct;
+export default ModalAddProduct;

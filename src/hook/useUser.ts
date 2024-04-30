@@ -1,6 +1,7 @@
 import { API_URL, IUser } from "@/types/common";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const useUser = () => {
   const [dataUser, setDataUser] = useState<IUser[]>();
@@ -21,6 +22,12 @@ const useUser = () => {
         setDataUser(response.data);
       }
     } catch (error) {
+      const axiosError = error as AxiosError;
+
+      if (axiosError?.response?.status === 403) {
+        toast.error("Access token is invalid");
+        return;
+      }
       console.log(error);
     }
   };

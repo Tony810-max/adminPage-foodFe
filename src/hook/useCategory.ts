@@ -1,7 +1,6 @@
 "use client";
 import { API_URL, ICategory } from "@/types/common";
-import axios from "axios";
-import { useRouter } from "next/router";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -35,6 +34,12 @@ export const useCategory = (idUpdate?: number) => {
         fetchCategory();
       }
     } catch (error) {
+      const axiosError = error as AxiosError;
+
+      if (axiosError?.response?.status === 403) {
+        toast.error("Access token is invalid");
+        return;
+      }
       console.log(error);
     }
   };

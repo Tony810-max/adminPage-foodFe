@@ -6,6 +6,7 @@ interface InputFieldProps {
   label: string;
   name: string;
   errorMessage?: string;
+  defaultValue?: string;
   type?: string;
   register: UseFormRegister<any>;
 }
@@ -13,6 +14,7 @@ interface InputFieldProps {
 const InputFieldProduct: React.FC<InputFieldProps> = ({
   label,
   name,
+  defaultValue,
   register,
   errorMessage,
   type,
@@ -20,7 +22,12 @@ const InputFieldProduct: React.FC<InputFieldProps> = ({
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={name}>{label}</label>
-      <Input id={name} {...register(name)} type={type} />
+      <Input
+        defaultValue={defaultValue}
+        id={name}
+        {...register(name)}
+        type={type}
+      />
       {errorMessage && (
         <p className="font-sans text-red-700 capitalize italic">
           {errorMessage}

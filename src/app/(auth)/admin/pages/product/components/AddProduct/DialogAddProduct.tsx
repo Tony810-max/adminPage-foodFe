@@ -10,9 +10,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ModalDiaglogProduct from "./ModalDiaglogProduct";
+import ModalAddProduct from "./ModalAddProduct";
 
-const DialogProduct = () => {
+const DialogAddProduct = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -28,10 +28,10 @@ const DialogProduct = () => {
             Make changes to your product here. Click save when you`re done.
           </DialogDescription>
         </DialogHeader>
-        <ModalDiaglogProduct />
+        <ModalAddProduct />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default DialogProduct;
+export default DialogAddProduct;

@@ -41,6 +41,7 @@ const TableCategory = () => {
               <Button
                 variant={"destructive"}
                 onClick={() => handleDeleteCategory(item?.id)}
+                className="font-sans text-base"
               >
                 Delete
               </Button>

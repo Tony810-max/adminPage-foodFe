@@ -1,11 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
 import { Button } from "@/components/ui/button";
 import useProduct from "@/hook/useProduct";
 import { format } from "date-fns";
 import Image from "next/image";
-
+import DialogUpdateProduct from "./UpdateProduct/DialogUpdateProduct";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import ModalUpdateProduct from "./UpdateProduct/ModalUpdateProduct";
 const TableProduct = () => {
   const { dataProduct, handleDeleteProduct } = useProduct();
   return (
@@ -75,10 +84,11 @@ const TableProduct = () => {
               <Button
                 variant={"destructive"}
                 onClick={() => handleDeleteProduct(item?.id)}
+                className="font-sans text-base"
               >
                 Delete
               </Button>
-              <Button variant={"outline"}>Update</Button>
+              <DialogUpdateProduct id={item.id} />
             </td>
           </tr>
         ))}
