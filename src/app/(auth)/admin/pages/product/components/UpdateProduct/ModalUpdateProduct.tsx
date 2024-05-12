@@ -145,7 +145,6 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
             const files = e.target.files;
             if (files && files?.length > 0) {
               setFile(files);
-              console.log("day la filelist:", files);
             }
           }}
           multiple

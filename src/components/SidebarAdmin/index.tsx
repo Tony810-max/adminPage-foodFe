@@ -7,6 +7,7 @@ import {
   ClipboardList,
   HomeIcon,
   Package2,
+  PackageCheck,
   SquareArrowRight,
   User,
 } from "lucide-react";
@@ -23,7 +24,8 @@ const DATA_SIDEBAR_ADMIN = [
     icon: <ClipboardList />,
   },
   { name: "Product", to: "/admin/pages/product", id: 3, icon: <Package2 /> },
-  { name: "User", to: "/admin/pages/user", id: 4, icon: <User /> },
+  { name: "Order", to: "/admin/pages/order", id: 4, icon: <PackageCheck /> },
+  { name: "User", to: "/admin/pages/user", id: 5, icon: <User /> },
 ];
 
 export default function App() {
@@ -78,9 +80,9 @@ export default function App() {
                 <SquareArrowRight />
               </button>
               <ReduceSidebarAdmin
-                 data={DATA_SIDEBAR_ADMIN}
-                 idFocus={idFocus}
-                 onSetIdFocus={setIdFocus}
+                data={DATA_SIDEBAR_ADMIN}
+                idFocus={idFocus}
+                onSetIdFocus={setIdFocus}
               />
             </motion.div>
           )}

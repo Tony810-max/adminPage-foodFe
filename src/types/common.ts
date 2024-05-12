@@ -49,3 +49,49 @@ export type AddProduct = {
   images: string[];
   categoryId: number;
 };
+
+export interface IOrder {
+  id: number;
+  orderAt: string;
+  status: string;
+  shippedAt: null;
+  deliveredAt: null;
+  shippingAddress: {
+    id: number;
+    phoneNumber: string;
+    name: string;
+    address: string;
+    city: string;
+    postCode: string;
+    state: string;
+    country: string;
+  };
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    address: string;
+    roles: string[];
+    createdAt: string;
+    updatedAt: string;
+  };
+  products: [
+    {
+      id: number;
+      product_unit_price: string;
+      product_quantity: number;
+      product: {
+        id: number;
+        title: string;
+        description: string;
+        price: string;
+        stock: number;
+        images: string[];
+        createdAt: string;
+        updatedAt: string;
+      };
+    }
+  ];
+}

@@ -21,7 +21,7 @@ export default function RootLayout({
 
   useEffect(() => {
     if (user) {
-      router.push("/admin");
+      // router.push("/admin");
     } else {
       router.push("/login");
     }
