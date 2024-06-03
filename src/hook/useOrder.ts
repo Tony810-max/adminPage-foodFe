@@ -19,7 +19,7 @@ export const useOrder = () => {
       });
 
       if (response) {
-        setDataOrder(response?.data);
+        setDataOrder(response?.data?.orders);
       }
     } catch (error) {
       console.log(error);

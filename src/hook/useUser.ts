@@ -19,7 +19,8 @@ const useUser = () => {
         },
       });
       if (response) {
-        setDataUser(response.data);
+        console.log(response);
+        setDataUser(response.data.users);
       }
     } catch (error) {
       const axiosError = error as AxiosError;

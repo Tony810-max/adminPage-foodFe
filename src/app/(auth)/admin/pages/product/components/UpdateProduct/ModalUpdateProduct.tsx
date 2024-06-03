@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { productSchema } from "../../types/common";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
@@ -30,7 +30,7 @@ interface ModalUpdateProps {
 const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
   const [file, setFile] = useState<FileList | null>(null);
   const { dataCategory } = useCategory();
-  const { uploadImage, handleUpdateProduct, fetchProduct } = useProduct();
+  const { uploadImage, handleUpdateProduct } = useProduct();
 
   const {
     register,

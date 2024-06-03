@@ -43,7 +43,7 @@ const DATA_SIDEBAR_ADMIN = [
 ];
 
 export default function App() {
-  const [opened, setOpened] = useState(true);
+  const [opened, setOpened] = useState(false);
   const [valueParam, setValueParam] = useState<string>("");
   const handleClick = () => {
     setOpened(!opened);
@@ -51,7 +51,7 @@ export default function App() {
 
   const sidebarVariants = {
     opened: {
-      width: 300,
+      width: 200,
       transition: {
         type: "tween",
         ease: "easeOut",
@@ -103,7 +103,7 @@ export default function App() {
                     <motion.aside
                       key="sidebar"
                       initial={{ width: 0 }}
-                      animate={{ width: 300 }}
+                      animate={{ width: 200 }}
                       exit={{ width: 0 }}
                       transition={{ duration: 0.5, ease: "easeInOut" }}
                     >

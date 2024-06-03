@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,15 +12,13 @@ import { CirclePlus } from "lucide-react";
 import React from "react";
 import TableCategory from "./components/TableCategory";
 import ModalCategory from "./components/ModalCategory";
-import { useCategory } from "@/hook/useCategory";
 
 const CategoryPage = () => {
-  const { fetchCategory } = useCategory();
   return (
     <div className="space-y-3">
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={"destructive"} className="">
+          <Button variant={"destructive"} className="items-start">
             <p className="px-2 font-sans text-lg ">Add</p>
             <CirclePlus />
           </Button>
@@ -36,8 +33,9 @@ const CategoryPage = () => {
           <ModalCategory />
         </DialogContent>
       </Dialog>
-      
-      <TableCategory />
+      <div className="flex ">
+        <TableCategory />
+      </div>
     </div>
   );
 };
