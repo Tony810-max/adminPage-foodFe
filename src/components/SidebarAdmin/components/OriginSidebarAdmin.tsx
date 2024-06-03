@@ -1,7 +1,9 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
 
 type sidebarItem = {
   name: string;
@@ -12,32 +14,42 @@ type sidebarItem = {
 
 interface originSidebarAdmin {
   data: sidebarItem[];
-  idFocus: number;
-  onSetIdFocus: (value: number) => void;
+  valueParam: string;
+  onSetValueParam: (value: string) => void;
+  opened: boolean;
 }
 
 const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
   data,
-  idFocus,
-  onSetIdFocus,
+  onSetValueParam,
+  valueParam,
+  opened,
 }) => {
   return (
-    <div className="flex flex-col gap-2">
+    <motion.div
+      className=" flex flex-col gap-2 overflow-hidden"
+      animate={{ width: opened ? "100%" : "0" }} 
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      style={{ width: !opened ? "0" : "100%" }}
+    >
       {data?.map((item) => (
         <Link href={item?.to} key={item?.id}>
           <Button
             variant={"outline"}
             className={cn("w-full flex gap-3 justify-between ", {
-              "bg-orange-500 text-white": idFocus === item?.id,
+              "bg-orange-500 text-white": valueParam === item?.name,
             })}
-            onClick={() => onSetIdFocus(item?.id)}
+            onClick={() => {
+              onSetValueParam(item?.name);
+              localStorage.setItem("selectedItem", item?.name);
+            }}
           >
             {item?.icon}
             <span className="font-sans text-base capitalize">{item?.name}</span>
           </Button>
         </Link>
       ))}
-    </div>
+    </motion.div>
   );
 };
 

@@ -6,15 +6,7 @@ import useProduct from "@/hook/useProduct";
 import { format } from "date-fns";
 import Image from "next/image";
 import DialogUpdateProduct from "./UpdateProduct/DialogUpdateProduct";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import ModalUpdateProduct from "./UpdateProduct/ModalUpdateProduct";
+
 const TableProduct = () => {
   const { dataProduct, handleDeleteProduct } = useProduct();
   return (
@@ -58,7 +50,7 @@ const TableProduct = () => {
               {item?.title}
             </td>
             <td className="py-4 border-collapse border border-slate-400 text-center">
-              {item?.category_title}
+              {item?.category?.title}
             </td>
             <td className="py-4 border-collapse border border-slate-400 text-center">
               {item?.description}

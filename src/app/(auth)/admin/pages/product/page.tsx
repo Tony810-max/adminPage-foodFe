@@ -1,7 +1,6 @@
 import React from "react";
-
-import TableProduct from "./components/TableProduct";
 import DialogAddProduct from "./components/AddProduct/DialogAddProduct";
+import TableProduct from "./components/TableProduct";
 
 const ProductPage = () => {
   return (

@@ -13,29 +13,31 @@ type sidebarItem = {
 
 interface ReduceSidebarAdmin {
   data: sidebarItem[];
-  idFocus: number;
-  onSetIdFocus: (value: number) => void;
+  valueParam: string;
+  onSetValueParam: (value: string) => void;
 }
 
 const ReduceSidebarAdmin: React.FC<ReduceSidebarAdmin> = ({
   data,
-  idFocus,
-  onSetIdFocus,
+  onSetValueParam,
+  valueParam,
 }) => {
   return (
-    <div className="flex flex-col items-center gap-2 min-w-3">
+    <div className="w-full flex flex-col items-center gap-2 min-w-3">
       {data?.map((item) => (
         <Link
           href={item?.to}
           key={item?.id}
-          // variants={itemVariants}
         >
           <Button
             variant={"outline"}
             className={cn("w-full flex justify-between ", {
-              "bg-orange-500 text-white": idFocus === item?.id,
+              "bg-orange-500 text-white": valueParam === item?.name,
             })}
-            onClick={() => onSetIdFocus(item?.id)}
+            onClick={() => {
+              onSetValueParam(item?.name);
+              localStorage.setItem("selectedItem", item?.name);
+            }}
           >
             {item?.icon}
           </Button>

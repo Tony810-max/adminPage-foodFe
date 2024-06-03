@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   AlignJustify,
@@ -14,80 +14,153 @@ import {
 import { iconContainerVariants, itemVariants } from "./types/const";
 import OriginSidebarAdmin from "./components/OriginSidebarAdmin";
 import ReduceSidebarAdmin from "./components/ReduceSidebarAdmin";
+import Image from "next/image";
 
 const DATA_SIDEBAR_ADMIN = [
-  { name: "Home", to: "/admin", id: 1, icon: <HomeIcon /> },
+  { name: "Home", value: "home", to: "/admin", id: 1, icon: <HomeIcon /> },
   {
     name: "Category",
+    value: "category",
     to: "/admin/pages/category",
     id: 2,
     icon: <ClipboardList />,
   },
-  { name: "Product", to: "/admin/pages/product", id: 3, icon: <Package2 /> },
-  { name: "Order", to: "/admin/pages/order", id: 4, icon: <PackageCheck /> },
+  {
+    name: "Product",
+    value: "product",
+    to: "/admin/pages/product",
+    id: 3,
+    icon: <Package2 />,
+  },
+  {
+    name: "Order",
+    value: "order",
+    to: "/admin/pages/order",
+    id: 4,
+    icon: <PackageCheck />,
+  },
   { name: "User", to: "/admin/pages/user", id: 5, icon: <User /> },
 ];
 
 export default function App() {
-  const [opened, setOpened] = useState(false);
-  const [idFocus, setIdFocus] = useState<number>(1);
+  const [opened, setOpened] = useState(true);
+  const [valueParam, setValueParam] = useState<string>("");
   const handleClick = () => {
     setOpened(!opened);
   };
 
+  const sidebarVariants = {
+    opened: {
+      width: 300,
+      transition: {
+        type: "tween",
+        ease: "easeOut",
+        duration: 0.4,
+      },
+    },
+    closed: {
+      width: 100,
+      transition: {
+        type: "spring",
+        // ease: "easeOut",
+        duration: 20,
+      },
+    },
+  };
+
+  useEffect(() => {
+    const savedValueParam = localStorage.getItem("selectedItem");
+    if (savedValueParam) {
+      setValueParam(savedValueParam);
+    }
+  }, []);
   return (
-    <main>
-      <AnimatePresence>
-        {opened && (
-          <motion.aside
-            initial={{ width: 80 }}
-            animate={{
-              width: 300,
-            }}
-            exit={{
-              width: 80,
-              transition: { duration: 0.1 },
-            }}
-          >
-            <motion.div
-              className="container bg-yellow-200 flex flex-col py-4 items-start"
+    <div className=" border  border-red-300 px-5 py-4 shadow-lg">
+      <div className="relative  aspect-[4/3]">
+        <Image src={"/images/logo.webp"} alt="logo" fill unoptimized priority />
+      </div>
+      <main className="flex justify-center">
+        <AnimatePresence>
+          {opened ? (
+            <motion.aside
+              variants={sidebarVariants}
               initial="closed"
-              animate="open"
-              exit="closed"
-              variants={itemVariants}
+              animate="opened"
+              exit="opened"
             >
-              <button className="self-end" onClick={handleClick}>
-                <AlignJustify />
-              </button>
-              <OriginSidebarAdmin
-                data={DATA_SIDEBAR_ADMIN}
-                idFocus={idFocus}
-                onSetIdFocus={setIdFocus}
-              />
-            </motion.div>
-          </motion.aside>
-        )}
-        <div className="btn-container bg-yellow-200 min-w-20 min-h-screen">
-          {!opened && (
-            <motion.div
-              initial="closed"
-              animate="open"
-              exit="closed"
-              variants={iconContainerVariants}
-              className="p-3"
-            >
-              <button onClick={handleClick} className="">
-                <SquareArrowRight />
-              </button>
-              <ReduceSidebarAdmin
-                data={DATA_SIDEBAR_ADMIN}
-                idFocus={idFocus}
-                onSetIdFocus={setIdFocus}
-              />
-            </motion.div>
+              <motion.div
+                className=" flex flex-col gap-4 py-4 items-center"
+                initial="closed"
+                animate="open"
+                exit="opened"
+                variants={itemVariants}
+              >
+                <button className="self-end" onClick={handleClick}>
+                  <AlignJustify />
+                </button>
+                <AnimatePresence>
+                  {opened ? (
+                    <motion.aside
+                      key="sidebar"
+                      initial={{ width: 0 }}
+                      animate={{ width: 300 }}
+                      exit={{ width: 0 }}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
+                    >
+                      <OriginSidebarAdmin
+                        opened={opened}
+                        valueParam={valueParam}
+                        onSetValueParam={setValueParam}
+                        data={DATA_SIDEBAR_ADMIN}
+                      />
+                    </motion.aside>
+                  ) : (
+                    <motion.aside
+                      key="sidebar"
+                      initial={{ width: 300 }}
+                      animate={{ width: 0 }}
+                      exit={{ width: 300 }}
+                      transition={{ duration: 3, ease: "easeInOut" }}
+                    >
+                      <ReduceSidebarAdmin
+                        valueParam={valueParam}
+                        onSetValueParam={setValueParam}
+                        data={DATA_SIDEBAR_ADMIN}
+                      />
+                    </motion.aside>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </motion.aside>
+          ) : (
+            <AnimatePresence>
+              <motion.aside
+                variants={sidebarVariants}
+                initial="closed"
+                animate="closed"
+                exit="closed"
+              >
+                <motion.div
+                  className=" flex flex-col gap-4 py-4 items-center"
+                  variants={sidebarVariants}
+                  initial="closed"
+                  animate="closed"
+                  exit="opened"
+                >
+                  <button onClick={handleClick} className="">
+                    <SquareArrowRight />
+                  </button>
+                  <ReduceSidebarAdmin
+                    valueParam={valueParam}
+                    onSetValueParam={setValueParam}
+                    data={DATA_SIDEBAR_ADMIN}
+                  />
+                </motion.div>
+              </motion.aside>
+            </AnimatePresence>
           )}
-        </div>
-      </AnimatePresence>
-    </main>
+        </AnimatePresence>
+      </main>
+    </div>
   );
 }

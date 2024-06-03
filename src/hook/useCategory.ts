@@ -16,7 +16,7 @@ export const useCategory = (idUpdate?: number) => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/category`);
       if (response) {
-        setDataCategory(response?.data);
+        setDataCategory(response?.data?.categories);
       }
     } catch (error) {
       console.log(error);

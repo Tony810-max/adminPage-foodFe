@@ -42,7 +42,7 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
     defaultValues: {
       title: data[0]?.title,
       price: data[0]?.price,
-      categoryId: data[0]?.category_title,
+      categoryId: data[0]?.category?.title,
       stock: data[0]?.stock,
       description: data[0]?.description,
     },

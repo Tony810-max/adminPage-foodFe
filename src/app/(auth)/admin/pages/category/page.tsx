@@ -14,7 +14,6 @@ import React from "react";
 import TableCategory from "./components/TableCategory";
 import ModalCategory from "./components/ModalCategory";
 import { useCategory } from "@/hook/useCategory";
-import { Input } from "@/components/ui/input";
 
 const CategoryPage = () => {
   const { fetchCategory } = useCategory();

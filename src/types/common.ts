@@ -1,4 +1,4 @@
-export const API_URL = "https://food-be-1dsk.onrender.com";
+export const API_URL = "https://phanhoangquoctu-datn-be.onrender.com";
 
 export interface IUser {
   id: number;
@@ -21,24 +21,41 @@ export interface ICategory {
 }
 
 export interface IProduct {
-  id: 6;
+  id: number;
   title: string;
   description: string;
   price: string;
+  discount: string;
   stock: number;
   images: string[];
   createdAt: string;
   updatedAt: string;
-  product_addedById: number;
-  product_categoryId: number;
-  category_id: number;
-  category_title: string;
-  category_description: string;
-  category_createdAt: string;
-  category_updatedAt: string;
-  category_addedById: number;
-  reviewCount: string;
-  avgRating: null | number;
+  deletedAt: null;
+  category: {
+    id: number;
+    title: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null;
+  };
+  author: {
+    id: number;
+    name: string;
+    gender: string;
+    dateOfBirth: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null;
+  };
+  publisher: {
+    id: number;
+    name: string;
+    description: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: null;
+  };
 }
 
 export type AddProduct = {
