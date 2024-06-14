@@ -28,7 +28,6 @@ const FormLoginPage = () => {
         password: data.password,
       });
       if (response) {
-        console.log(response);
         const check = response?.data?.user?.roles?.includes("admin");
         if (check) {
           localStorage.setItem("user", JSON.stringify(response?.data?.user));

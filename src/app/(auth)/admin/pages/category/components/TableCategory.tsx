@@ -4,12 +4,23 @@ import { useCategory } from "@/hook/useCategory";
 import { format } from "date-fns";
 import React from "react";
 import DialogUpdateCategory from "./DialogUpdateCategory";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Trash2 } from "lucide-react";
 
 const TableCategory = () => {
   const { dataCategory, handleDeleteCategory } = useCategory();
   return (
-    <div className="w-[85%] border-none overflow-x-scroll">
-      <table className="border-collapse border border-slate-400 ">
+    <div className="max-w-[36rem]  border-none overflow-x-scroll">
+      {/* <table className="border-collapse border border-slate-400 ">
         <thead>
           <tr>
             <th className="min-w-20 border border-slate-300 py-4">id</th>
@@ -17,10 +28,10 @@ const TableCategory = () => {
             <th className="min-w-[250px] border border-slate-300 py-4">
               description
             </th>
-            <th className="min-w-[250px] border border-slate-300 py-4">
+            <th className="min-w-32 border border-slate-300 py-4">
               Create Day
             </th>
-            <th className="min-w-[250px] border border-slate-300 py-4">
+            <th className="min-w-32 border border-slate-300 py-4">
               Update Day
             </th>
             <th className=" min-w-[250px] border border-slate-300 py-4">
@@ -63,7 +74,48 @@ const TableCategory = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
+      <Table className="min-w-[54rem]">
+        <TableCaption>A list of your user.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>#</TableHead>
+            <TableHead className="min-w-28 text-center">Title</TableHead>
+            <TableHead className="min-w-4">Description</TableHead>
+            <TableHead className="font-sans text-center">Create Day</TableHead>
+            <TableHead className="font-sans text-center">Update Day</TableHead>
+            <TableHead className="font-sans text-center">Delete - Update</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className="relative">
+          {dataCategory?.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell className="font-medium">{item.id}</TableCell>
+              <TableCell className="text-center">{item.title}</TableCell>
+              <TableCell>{item.description}</TableCell>
+              <TableCell className="text-right">
+                {format(new Date(item?.createdAt), "yyyy-MM-dd hh:mm:ss")}
+              </TableCell>
+              <TableCell className="text-right">
+                {format(new Date(item?.updatedAt), "yyyy-MM-dd hh:mm:ss")}
+              </TableCell>
+              <TableCell className="flex gap-4 sticky">
+                <Button
+                  variant={"destructive"}
+                  onClick={() => handleDeleteCategory(item?.id)}
+                >
+                  <Trash2 size={18} />
+                </Button>
+                <DialogUpdateCategory
+                  id={item?.id}
+                  tittleDefault={item?.title}
+                  desDefault={item?.description}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 };

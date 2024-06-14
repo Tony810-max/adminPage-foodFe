@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ModaUpdateCategory from "./ModaUpdateCategory";
+import { Pen } from "lucide-react";
 
 interface dialogUpdateProps {
   id: number;
@@ -26,7 +27,7 @@ const DialogUpdateCategory: React.FC<dialogUpdateProps> = ({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="font-sans text-base">
-          Update
+          <Pen size={18}/>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

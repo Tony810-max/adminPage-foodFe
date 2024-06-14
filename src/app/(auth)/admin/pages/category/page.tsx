@@ -33,7 +33,7 @@ const CategoryPage = () => {
           <ModalCategory />
         </DialogContent>
       </Dialog>
-      <div className="flex ">
+      <div className="flex justify-center">
         <TableCategory />
       </div>
     </div>

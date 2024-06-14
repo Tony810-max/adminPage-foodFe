@@ -1,4 +1,3 @@
-import { CircleUser, UserPlus } from "lucide-react";
 import React from "react";
 import CardInfoAdmin from "./components/CardInfoAdmin";
 
