@@ -19,3 +19,7 @@ export interface IUpdate {
   value: string;
   idPublisher: number;
 }
+
+export interface IDelete {
+  idPublisher: number;
+}

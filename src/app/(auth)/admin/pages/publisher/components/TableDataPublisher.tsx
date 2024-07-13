@@ -11,6 +11,7 @@ import {
 import { PublisherContext } from "@/context/publisherContext";
 import { format } from "date-fns";
 import UpdateDialogPublisher from "./UpdateDialogPublisher";
+import DeletePublisher from "./DeletePublisher";
 
 const TableDataPublisher = () => {
   const context = React.useContext(PublisherContext);
@@ -37,6 +38,9 @@ const TableDataPublisher = () => {
           <TableHead className="text-center font-sans text-base capitalize">
             update - edit
           </TableHead>
+          <TableHead className="text-center font-sans text-base capitalize">
+            delete
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -57,12 +61,15 @@ const TableDataPublisher = () => {
             <TableCell className="font-sans text-base text-center">
               {format(new Date(publisher?.updatedAt), "dd-MM-yyyy HH:mm:ss")}
             </TableCell>
-            <TableCell className="flex justify-center">
+            <TableCell>
               <UpdateDialogPublisher
                 name={publisher?.name}
                 value={publisher?.description}
                 idPublisher={publisher?.id}
               />
+            </TableCell>
+            <TableCell className="text-center">
+              <DeletePublisher idPublisher={publisher?.id} />
             </TableCell>
           </TableRow>
         ))}

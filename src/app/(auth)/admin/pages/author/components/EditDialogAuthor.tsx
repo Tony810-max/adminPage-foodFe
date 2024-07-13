@@ -16,11 +16,11 @@ const EditDialogAuthor: React.FC<IDialogAuthor> = ({ idAuthor }) => {
   const [open, setOpen] = React.useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="text-center w-full">
         <Pencil
-          color="red"
-          size={"16"}
-          className="hover:cursor-pointer hover:opacity-70"
+          color="orange"
+          size={"18"}
+          className="hover:cursor-pointer hover:opacity-70 "
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

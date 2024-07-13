@@ -12,7 +12,6 @@ import { Pencil } from "lucide-react";
 import EditDialogPublisher from "./EditDialogPublisher";
 import { IUpdate } from "../types/common";
 
-
 const UpdateDialogPublisher: React.FC<IUpdate> = ({
   name,
   value,
@@ -22,9 +21,9 @@ const UpdateDialogPublisher: React.FC<IUpdate> = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="w-full text-center">
         <Pencil
-          color="red"
+          color="orange"
           size={"20"}
           className="hover:cursor-pointer hover:opacity-70"
         />
