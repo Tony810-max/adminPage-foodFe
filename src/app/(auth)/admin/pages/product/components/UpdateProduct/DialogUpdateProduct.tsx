@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,19 +9,22 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ModalUpdateProduct from "./ModalUpdateProduct";
-import { IProduct } from "@/types/common";
+import { IProductSub } from "@/types/common";
 import useProduct from "@/hook/useProduct";
-
-interface DialogUpdateProps {
-  id: number;
-}
+import { DialogUpdateProps } from "../../types/common";
 
 const DialogUpdateProduct: React.FC<DialogUpdateProps> = ({ id }) => {
   const { dataProduct } = useProduct();
-  const [dataCurrProduct, setDataCurrProduct] = useState<IProduct[]>([]);
+  const [dataCurrProduct, setDataCurrProduct] = React.useState<IProductSub[]>(
+    []
+  );
+
   const handleUpdateForm = () => {
-    setDataCurrProduct(dataProduct?.filter((data) => data?.id === id));
+    const updatedData =
+      dataProduct?.products.filter((data) => data.id === id) || [];
+    setDataCurrProduct(updatedData);
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>

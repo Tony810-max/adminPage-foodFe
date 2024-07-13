@@ -23,11 +23,13 @@ const DialogUpdateCategory: React.FC<dialogUpdateProps> = ({
   desDefault,
   tittleDefault,
 }) => {
+  const [open, setOpen] = React.useState<boolean>(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="font-sans text-base">
-          <Pen size={18}/>
+          <Pen size={18} />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -41,6 +43,7 @@ const DialogUpdateCategory: React.FC<dialogUpdateProps> = ({
           id={id}
           tittleDefault={tittleDefault}
           desDefault={desDefault}
+          onSetOpen={setOpen}
         />
       </DialogContent>
     </Dialog>

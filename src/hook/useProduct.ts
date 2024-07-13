@@ -1,18 +1,20 @@
-import { API_URL, AddProduct, IProduct } from "@/types/common";
+"use client";
+import { API_URL, AddProduct, IProductMain } from "@/types/common";
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const useProduct = () => {
-  const [dataProduct, setDataProduct] = useState<IProduct[]>([]);
+  const [dataProduct, setDataProduct] = useState<IProductMain>();
+
   const fetchProduct = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/products`);
       if (response) {
-        setDataProduct(response?.data?.products);
+        setDataProduct(response?.data);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -32,7 +34,7 @@ const useProduct = () => {
         toast.error("Access token is invalid");
         return;
       }
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -96,13 +98,14 @@ const useProduct = () => {
         toast.error("Access token is invalid");
         return;
       }
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     fetchProduct();
   }, []);
+
   return {
     dataProduct,
     fetchProduct,

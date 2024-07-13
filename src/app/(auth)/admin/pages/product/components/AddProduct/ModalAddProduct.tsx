@@ -1,14 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import axios from "axios";
 
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCategory } from "@/hook/useCategory";
-import useProduct from "@/hook/useProduct";
 
-import { productSchema } from "../../types/common";
-import { ICategory } from "@/types/common";
+import { productSchema } from "../../types/productSchema";
+import { API_URL } from "@/types/common";
 
 import {
   Select,
@@ -24,12 +21,16 @@ import InputFieldProduct from "../InputFieldProduct";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CategoryContext } from "@/context/categoryContex";
+import axios, { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { IAddProduct } from "../../types/common";
 
 const ModalAddProduct = () => {
   const [file, setFile] = useState<FileList | null>(null);
-
-  const { handleAddProduct, uploadImage } = useProduct();
-  const { dataCategory } = useCategory();
+  // const { handleAddProduct, uploadImage } = useProduct();
+  const context = React.useContext(CategoryContext);
+  const dataCategory = context?.dataCategory;
 
   const {
     register,
@@ -40,24 +41,72 @@ const ModalAddProduct = () => {
     resolver: yupResolver(productSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  const handleAddProduct = async (productData: IAddProduct) => {
+    console.log("productData", productData);
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
+
+      const response = await axios.post(
+        `${API_URL}/api/v1/products`,
+        productData,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+
+      if (response) {
+        console.log(response);
+        toast.success("Product added successfully");
+        // fetchProduct();
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError?.response?.status === 403) {
+        toast.error("Access token is invalid");
+        return;
+      }
+      console.error("Error in handleAddProduct:", error);
+      toast.error("Failed to add product");
+    }
+  };
+
+  const onSubmit = async (data: IAddProduct) => {
+    console.log(data);
     let images = [];
     if (file) {
       images = await uploadImage(file);
+    } else {
+      return toast.error("Image not change");
     }
-    const filterCategoryIdProduct: ICategory[] = dataCategory?.filter(
-      (item) => item?.title === data?.categoryId
-    );
+
     const productData = {
       title: data.title,
-      stock: Number(data.stock),
-      price: Number(data.price),
       description: data.description,
-      categoryId: filterCategoryIdProduct[0]?.id,
+      price: data.price,
+      stock: data.stock,
+      categoryId: data?.categoryId,
       images: images,
+      discount: 10,
+      authorId: 1,
+      publisherId: 1,
     };
 
     await handleAddProduct(productData);
+  };
+
+  const uploadImage = async (file: FileList) => {
+    const CLOUD_NAME = "dehamgr2z";
+    const PRESET_NAME = "pn5guixu";
+    const FOLDER_NAME = "image_FoodFe";
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+    const uploadPromises = Array.from(file).map((file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", FOLDER_NAME);
+      formData.append("upload_preset", PRESET_NAME);
+      return axios.post(url, formData).then((response) => response.data.url);
+    });
+
+    return Promise.all(uploadPromises);
   };
 
   return (
@@ -74,17 +123,20 @@ const ModalAddProduct = () => {
         control={control}
         render={({ field }) => (
           <Select
-            {...field}
-            onValueChange={(value: string) => field.onChange(value)}
+            value={field.value?.toString()}
+            onValueChange={(value) => field.onChange(value)}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a Category" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent ref={field.ref}>
               <SelectGroup>
                 <SelectLabel>Category</SelectLabel>
-                {dataCategory?.map((category) => (
-                  <SelectItem key={category?.id} value={category?.title}>
+                {dataCategory?.categories?.map((category) => (
+                  <SelectItem
+                    key={category?.id}
+                    value={category?.id?.toString()}
+                  >
                     {category?.title}
                   </SelectItem>
                 ))}

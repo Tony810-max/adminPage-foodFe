@@ -1,5 +1,5 @@
-import React, {  useState } from "react";
-import { productSchema } from "../../types/common";
+import React, { useState } from "react";
+import { productSchema } from "../../types/productSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import InputFieldProduct from "../InputFieldProduct";
@@ -16,22 +16,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCategory } from "@/hook/useCategory";
-import { ICategory, IProduct } from "@/types/common";
+
+import { AddProduct, IProductSub, IUpdateProduct } from "@/types/common";
+
 import Image from "next/image";
 import useProduct from "@/hook/useProduct";
 import { toast } from "react-toastify";
+import { CategoryContext } from "@/context/categoryContex";
 
 interface ModalUpdateProps {
-  data: IProduct[];
+  data: IProductSub[];
   id: number;
 }
 
 const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
-  const [file, setFile] = useState<FileList | null>(null);
-  const { dataCategory } = useCategory();
-  const { uploadImage, handleUpdateProduct } = useProduct();
-
   const {
     register,
     handleSubmit,
@@ -40,15 +38,19 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
   } = useForm({
     resolver: yupResolver(productSchema),
     defaultValues: {
-      title: data[0]?.title,
-      price: data[0]?.price,
-      categoryId: data[0]?.category?.title,
-      stock: data[0]?.stock,
-      description: data[0]?.description,
+      title: data[0].title,
+      price: Number(data[0].price),
+      categoryId: data[0].category.id,
+      stock: data[0].stock,
+      description: data[0].description,
     },
   });
+  const [file, setFile] = useState<FileList | null>(null);
+  const { uploadImage, handleUpdateProduct } = useProduct();
+  const context = React.useContext(CategoryContext);
+  const dataCategory = context?.dataCategory;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: IUpdateProduct) => {
     let images = [];
     if (file) {
       images = await uploadImage(file);
@@ -56,19 +58,14 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
       return toast.error("Image not change");
     }
 
-    const filterCategoryIdProduct: ICategory[] = dataCategory.filter(
-      (category) => category?.title === data?.categoryId
-    );
-
     const productData = {
       title: data.title,
       description: data.description,
       price: Number(data.price),
       stock: Number(data.stock),
-      categoryId: filterCategoryIdProduct[0]?.id,
+      categoryId: data?.categoryId,
       images: images,
     };
-
     await handleUpdateProduct(id, productData);
   };
 
@@ -87,6 +84,7 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
         render={({ field }) => (
           <Select
             {...field}
+            value=""
             onValueChange={(value: string) => field.onChange(value)}
           >
             <SelectTrigger className="w-[180px]">
@@ -95,8 +93,11 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Category</SelectLabel>
-                {dataCategory?.map((category) => (
-                  <SelectItem key={category?.id} value={category?.title}>
+                {dataCategory?.categories?.map((category) => (
+                  <SelectItem
+                    key={category?.id}
+                    value={category?.id?.toString()}
+                  >
                     {category?.title}
                   </SelectItem>
                 ))}

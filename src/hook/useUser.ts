@@ -1,3 +1,4 @@
+"use client";
 import { API_URL, IUser } from "@/types/common";
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
@@ -19,7 +20,6 @@ const useUser = () => {
         },
       });
       if (response) {
-        console.log(response);
         setDataUser(response.data.users);
       }
     } catch (error) {
@@ -29,7 +29,7 @@ const useUser = () => {
         toast.error("Access token is invalid");
         return;
       }
-      console.log(error);
+      console.error(error);
     }
   };
 

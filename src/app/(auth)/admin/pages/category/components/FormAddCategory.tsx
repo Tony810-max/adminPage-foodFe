@@ -1,33 +1,68 @@
+"use client";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
-import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCategory } from "@/hook/useCategory";
+import { schemaCategory } from "../types/schemaCategory";
+import axios from "axios";
+import { API_URL } from "@/types/common";
+import { toast } from "react-toastify";
+import { dataAddCategory } from "../types/common";
 
-const schema = yup
-  .object()
-  .shape({
-    title: yup.string().required(),
-    description: yup.string().required(),
-  })
-  .required();
+interface IModalCategory {
+  onSetOpen: (value: boolean) => void;
+  fetchCategory: () => void;
+}
 
-const ModalCategory = () => {
-  const { onHandleSubmit } = useCategory();
+const FormAddCategory: React.FC<IModalCategory> = ({
+  onSetOpen,
+  fetchCategory,
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schemaCategory),
   });
+
+  const [accessToken, setAccessToken] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = JSON.parse(localStorage.getItem("accessToken")!);
+      setAccessToken(token);
+    }
+  }, []);
+
+  const handleAddCategory = async (data: dataAddCategory) => {
+    if (!accessToken) {
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/v1/category`,
+        {
+          title: data.title,
+          description: data.description,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      if (response) {
+        toast.success("Add category successfully");
+        onSetOpen(false);
+        fetchCategory();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <form
       className="flex flex-col gap-4 py-4"
-      onSubmit={handleSubmit((data) => onHandleSubmit(data))}
+      onSubmit={handleSubmit(handleAddCategory)}
     >
       <div className="space-y-2">
         <label
@@ -78,4 +113,4 @@ const ModalCategory = () => {
   );
 };
 
-export default ModalCategory;
+export default FormAddCategory;

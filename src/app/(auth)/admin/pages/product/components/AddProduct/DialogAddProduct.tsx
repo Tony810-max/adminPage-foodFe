@@ -16,9 +16,11 @@ const DialogAddProduct = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"destructive"} className="">
-          <p className="px-2 font-sans text-lg ">Add</p>
-          <CirclePlus />
+        <Button
+          variant={"destructive"}
+          className="font-sans text-base capitalize"
+        >
+          Add product
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

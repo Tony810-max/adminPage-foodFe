@@ -1,91 +1,84 @@
 "use client";
 import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-import { Button } from "@/components/ui/button";
-import useProduct from "@/hook/useProduct";
-import { format } from "date-fns";
-import Image from "next/image";
 import DialogUpdateProduct from "./UpdateProduct/DialogUpdateProduct";
+import { ProductContext } from "@/context/productContext";
+import ViewDetailProduct from "./ViewProduct/ViewDetailProduct";
+import DeleteAlertProduct from "./DeleteProduct.tsx/DeleteAlertProduct";
+import ViewAuthorProduct from "./ViewAuthorProduct";
+import ViewCategoryProduct from "./ViewCategoryProduct";
 
 const TableProduct = () => {
-  const { dataProduct, handleDeleteProduct } = useProduct();
+  const context = React.useContext(ProductContext);
+  const dataProduct = context?.dataProduct;
+
   return (
-    <table className="w-full border-collapse border border-slate-400">
-      <thead>
-        <tr>
-          <th className="border-collapse border border-slate-400 py-4">id</th>
-          <th className="border-collapse border border-slate-400 py-4">
+    <Table>
+      <TableCaption>A list of your product.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[50px] font-sans text-center text-sm">
+            #
+          </TableHead>
+          <TableHead className="font-sans text-center text-sm capitalize">
             title
-          </th>
-          <th className="border-collapse border border-slate-400 py-4">
+          </TableHead>
+          <TableHead className="font-sans text-center text-sm capitalize">
             category
-          </th>
-          <th className="border-collapse border border-slate-400 py-4">
-            description
-          </th>
-          <th className="border-collapse border border-slate-400 py-4">
-            price
-          </th>
-          <th className="border-collapse border border-slate-400 py-4">
-            image
-          </th>
-          <th className="border-collapse border border-slate-400 py-4">
-            CreateAt
-          </th>
-          <th className="border-collapse border border-slate-400 py-4">
-            UpdateAt
-          </th>
-          <th className="border-collapse border border-slate-400 py-4">
-            Delete - Update
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {dataProduct?.map((item) => (
-          <tr key={item?.id}>
-            <td className="border-collapse border border-slate-400 text-center">
-              {item?.id}
-            </td>
-            <td className="py-4 border-collapse border border-slate-400 text-center">
-              {item?.title}
-            </td>
-            <td className="py-4 border-collapse border border-slate-400 text-center">
-              {item?.category?.title}
-            </td>
-            <td className="py-4 border-collapse border border-slate-400 text-center">
-              {item?.description}
-            </td>
-            <td className="py-4 border-collapse border border-slate-400 text-center">
-              {item?.price}
-            </td>
-            <td className="py-4 relative border-collapse border border-slate-400 text-center">
-              <Image
-                src={item.images[0]}
-                alt="image Product"
-                fill
-                sizes="(min-width: 768px) 100vw, (min-width: 1200px) 50vw, 33vw"
-              />
-            </td>
-            <td className="py-4 border-collapse border border-slate-400 text-center">
-              {format(new Date(item?.createdAt), "yyyy-MM-dd hh:mm:ss")}
-            </td>
-            <td className="py-4 border-collapse border border-slate-400 text-center">
-              {format(new Date(item?.updatedAt), "yyyy-MM-dd hh:mm:ss")}
-            </td>
-            <td className="py-4 border-collapse border border-slate-400 text-center space-x-3">
-              <Button
-                variant={"destructive"}
-                onClick={() => handleDeleteProduct(item?.id)}
-                className="font-sans text-base"
-              >
-                Delete
-              </Button>
-              <DialogUpdateProduct id={item.id} />
-            </td>
-          </tr>
+          </TableHead>
+          <TableHead className="font-sans text-center text-sm capitalize">
+            author
+          </TableHead>
+          <TableHead className="font-sans text-center text-sm capitalize">
+            infomation product
+          </TableHead>
+
+          <TableHead className="font-sans text-center text-sm capitalize">
+            edit product
+          </TableHead>
+          <TableHead className="font-sans text-center text-sm capitalize">
+            delete product
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {dataProduct?.products?.map((product) => (
+          <TableRow key={product?.id}>
+            <TableCell className="font-sans text-center text-sm ">
+              {product?.id}
+            </TableCell>
+            <TableCell className="font-sans text-center text-sm capitalize">
+              {product?.title}
+            </TableCell>
+            <TableCell className="font-sans text-center text-sm capitalize">
+              <ViewCategoryProduct data={product} />
+            </TableCell>
+            <TableCell className="font-sans text-center text-sm capitalize">
+              <ViewAuthorProduct data={product} />
+            </TableCell>
+            <TableCell className="font-sans text-center text-sm capitalize">
+              <ViewDetailProduct data={product} />
+            </TableCell>
+          
+            <TableCell className="font-sans text-center text-sm capitalize">
+              <DialogUpdateProduct id={product?.id} />
+            </TableCell>
+            <TableCell className="font-sans text-center text-sm capitalize">
+              <DeleteAlertProduct id={product?.id} />
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 };
 

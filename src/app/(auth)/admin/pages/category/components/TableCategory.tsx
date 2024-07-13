@@ -1,122 +1,103 @@
-import { Button } from "@/components/ui/button";
-
-import { useCategory } from "@/hook/useCategory";
-import { format } from "date-fns";
+"use client";
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 import DialogUpdateCategory from "./DialogUpdateCategory";
 import {
   Table,
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Trash2 } from "lucide-react";
+import axios, { AxiosError } from "axios";
+import { API_URL } from "@/types/common";
+import { toast } from "react-toastify";
+import { CategoryContext } from "@/context/categoryContex";
 
 const TableCategory = () => {
-  const { dataCategory, handleDeleteCategory } = useCategory();
+  const context = React.useContext(CategoryContext);
+  const dataCategory = context?.dataCategory;
+  const fetchCategory = context?.fetchCategory;
+  const [accessToken, setAccessToken] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = JSON.parse(localStorage.getItem("accessToken")!);
+      setAccessToken(token);
+    }
+  }, []);
+
+  const handleDeleteCategory = async (id: number) => {
+    if (!accessToken) {
+      toast.error("No access token found");
+      return;
+    }
+    try {
+      const response = await axios.delete(`${API_URL}/api/v1/category/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (response) {
+        toast.success("Delete category successfully");
+        fetchCategory();
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError;
+
+      if (axiosError?.response?.status === 403) {
+        toast.error("Access token is invalid");
+        return;
+      }
+      console.error(error);
+    }
+  };
   return (
-    <div className="max-w-[36rem]  border-none overflow-x-scroll">
-      {/* <table className="border-collapse border border-slate-400 ">
-        <thead>
-          <tr>
-            <th className="min-w-20 border border-slate-300 py-4">id</th>
-            <th className="min-w-40 border border-slate-300 py-4">title</th>
-            <th className="min-w-[250px] border border-slate-300 py-4">
-              description
-            </th>
-            <th className="min-w-32 border border-slate-300 py-4">
-              Create Day
-            </th>
-            <th className="min-w-32 border border-slate-300 py-4">
-              Update Day
-            </th>
-            <th className=" min-w-[250px] border border-slate-300 py-4">
-              Delete - Update
-            </th>
-          </tr>
-        </thead>
-        <tbody className="">
-          {dataCategory?.map((item) => (
-            <tr key={item?.id}>
-              <td className="py-4 border border-slate-300 text-center">
-                {item?.id}
-              </td>
-              <td className="py-4 border border-slate-300 text-center">
-                {item?.title}
-              </td>
-              <td className="py-4 border border-slate-300 text-center">
-                {item?.description}
-              </td>
-              <td className="py-4 border border-slate-300 text-center">
-                {format(new Date(item?.createdAt), "yyyy-MM-dd hh:mm:ss")}
-              </td>
-              <td className="py-4 border border-slate-300 text-center">
-                {format(new Date(item?.updatedAt), "yyyy-MM-dd hh:mm:ss")}
-              </td>
-              <td className="py-4 border border-slate-300 text-center space-x-2">
-                <Button
-                  variant={"destructive"}
-                  onClick={() => handleDeleteCategory(item?.id)}
-                  className="font-sans text-base"
-                >
-                  Delete
-                </Button>
-                <DialogUpdateCategory
-                  id={item?.id}
-                  tittleDefault={item?.title}
-                  desDefault={item?.description}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-      <Table className="min-w-[54rem]">
-        <TableCaption>A list of your user.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead className="min-w-28 text-center">Title</TableHead>
-            <TableHead className="min-w-4">Description</TableHead>
-            <TableHead className="font-sans text-center">Create Day</TableHead>
-            <TableHead className="font-sans text-center">Update Day</TableHead>
-            <TableHead className="font-sans text-center">Delete - Update</TableHead>
+    <Table>
+      <TableCaption>A list of your category.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>#</TableHead>
+          <TableHead className="min-w-28 text-center">Title</TableHead>
+          <TableHead className="min-w-4">Description</TableHead>
+          <TableHead className="font-sans text-center">Create Day</TableHead>
+          <TableHead className="font-sans text-center">Update Day</TableHead>
+          <TableHead className="font-sans text-center">
+            Delete - Update
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="relative">
+        {dataCategory?.categories?.map((item) => (
+          <TableRow key={item.id}>
+            <TableCell className="font-medium">{item.id}</TableCell>
+            <TableCell className="text-center">{item.title}</TableCell>
+            <TableCell>{item.description}</TableCell>
+            <TableCell className="text-right">
+              {format(new Date(item?.createdAt), "yyyy-MM-dd hh:mm:ss")}
+            </TableCell>
+            <TableCell className="text-right">
+              {format(new Date(item?.updatedAt), "yyyy-MM-dd hh:mm:ss")}
+            </TableCell>
+            <TableCell className="flex gap-4 sticky">
+              <Button
+                variant={"destructive"}
+                onClick={() => handleDeleteCategory(item?.id)}
+              >
+                <Trash2 size={18} />
+              </Button>
+              <DialogUpdateCategory
+                id={item?.id}
+                tittleDefault={item?.title}
+                desDefault={item?.description}
+              />
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody className="relative">
-          {dataCategory?.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell className="font-medium">{item.id}</TableCell>
-              <TableCell className="text-center">{item.title}</TableCell>
-              <TableCell>{item.description}</TableCell>
-              <TableCell className="text-right">
-                {format(new Date(item?.createdAt), "yyyy-MM-dd hh:mm:ss")}
-              </TableCell>
-              <TableCell className="text-right">
-                {format(new Date(item?.updatedAt), "yyyy-MM-dd hh:mm:ss")}
-              </TableCell>
-              <TableCell className="flex gap-4 sticky">
-                <Button
-                  variant={"destructive"}
-                  onClick={() => handleDeleteCategory(item?.id)}
-                >
-                  <Trash2 size={18} />
-                </Button>
-                <DialogUpdateCategory
-                  id={item?.id}
-                  tittleDefault={item?.title}
-                  desDefault={item?.description}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 

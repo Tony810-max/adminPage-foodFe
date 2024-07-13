@@ -22,7 +22,10 @@ const StatusOrder: React.FC<statusProps> = ({
   variant,
 }) => {
   return (
-    <Badge variant={variant} className={cn("gap-2 w-fit px-4 py-2 ", className)}>
+    <Badge
+      variant={variant}
+      className={cn("gap-2 w-fit px-4 py-2 ", className)}
+    >
       <Icon size={15} />
       <p className="font-sans text-sm  capitalize">{value}</p>
     </Badge>

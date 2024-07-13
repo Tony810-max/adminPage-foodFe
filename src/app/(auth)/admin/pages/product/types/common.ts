@@ -1,12 +1,20 @@
-import * as yup from "yup";
+import { IProductSub } from "@/types/common";
 
-export const productSchema = yup
-  .object()
-  .shape({
-    title: yup.string().required(),
-    categoryId: yup.string().required(),
-    stock: yup.number().required(),
-    price: yup.string().required(),
-    description: yup.string().required(),
-  })
-  .required();
+export interface IAddProduct {
+  title: string;
+  description: string;
+  price: number;
+  //   discount: number;
+  stock: number;
+  categoryId: number;
+  //   authorId: number;
+  //   publisherId: number;
+}
+
+export interface IViewDetail {
+  data: IProductSub;
+}
+
+export interface DialogUpdateProps {
+  id: number;
+}

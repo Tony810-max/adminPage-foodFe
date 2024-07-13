@@ -1,7 +1,6 @@
 import SidebarAdmin from "@/components/SidebarAdmin";
 import Header from "@/components/layouts/Header";
 import React from "react";
-
 const layoutAdmin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div className="flex gap-10 min-h-screen ">

@@ -1,8 +1,11 @@
-import * as yup from 'yup';
-export const schema = yup
-  .object()
-  .shape({
-    name: yup.string().required(),
-    age: yup.number().required(),
-  })
-  .required();
+import { ICategory } from "@/types/common";
+
+export type dataAddCategory = {
+  title: string;
+  description: string;
+};
+
+export interface IDataCategory {
+  dataCategory: ICategory[];
+  fetchCategory: () => void;
+}

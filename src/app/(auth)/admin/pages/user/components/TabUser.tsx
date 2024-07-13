@@ -1,40 +1,64 @@
-import { cn } from "@/lib/utils";
-import Link from "next/link";
 import React from "react";
+import { cn } from "@/lib/utils"; // Giả sử 'cn' là hàm để kết hợp các class
+import { Button } from "@/components/ui/button";
+import { DATA_TAB, DATA_TAB_ADMIN } from "../types/constant";
+import { UserContext } from "@/context/userContext";
 
-interface tabUserProps {
-  href: string;
-  title: string;
-  selectTabUser: string | undefined;
-  setSelectTabUser: (value: string) => void;
+interface ITab {
+  tabCurr: string;
+  tabAdmin: string;
+  onSetTabCurr: (value: string) => void;
+  onSetTabAdmin: (value: string) => void;
 }
 
-const TabUser: React.FC<tabUserProps> = ({
-  href,
-  title,
-  selectTabUser,
-  setSelectTabUser,
+const TabUser: React.FC<ITab> = ({
+  onSetTabCurr,
+  tabCurr,
+  onSetTabAdmin,
+  tabAdmin,
 }) => {
-  const handleSelectTabUser = () => {
-    setSelectTabUser(title);
-    if (selectTabUser) {
-      localStorage.setItem("selectTabUser", title);
+  const active = React.useContext(UserContext);
+  const onSetActive = active?.setActive;
+
+  const handleTabClick = (tabName: string) => {
+    if (DATA_TAB.find((tab) => tab.name === tabName)) {
+      onSetTabCurr(tabName);
+      onSetTabAdmin(tabName);
+      onSetActive?.(DATA_TAB.find((tab) => tab.name === tabName)?.value);
+    } else if (DATA_TAB_ADMIN.includes(tabName)) {
+      onSetTabAdmin(tabName);
+      onSetTabCurr(tabName);
+      onSetActive(true);
     }
   };
 
   return (
-    <Link
-      href={href}
-      className={cn(
-        "font-sans text-base border py-2 px-8 hover:opacity-70 rounded-lg uppercase",
-        {
-          "bg-orange-500 text-white": title === selectTabUser,
-        }
-      )}
-      onClick={handleSelectTabUser}
-    >
-      {title}
-    </Link>
+    <div className="space-x-2">
+      {DATA_TAB?.map((tab) => (
+        <Button
+          key={tab.name}
+          variant="outline"
+          onClick={() => handleTabClick(tab.name)}
+          className={cn("font-sans text-sm capitalize", {
+            "bg-red-600 text-white": tab.name === tabCurr,
+          })}
+        >
+          {tab.name}
+        </Button>
+      ))}
+      {DATA_TAB_ADMIN?.map((tabAdminCurr) => (
+        <Button
+          key={tabAdminCurr}
+          variant="outline"
+          onClick={() => handleTabClick(tabAdminCurr)}
+          className={cn("font-sans text-sm capitalize", {
+            "bg-red-600 text-white": tabAdminCurr === tabAdmin,
+          })}
+        >
+          {tabAdminCurr}
+        </Button>
+      ))}
+    </div>
   );
 };
 

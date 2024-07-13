@@ -30,7 +30,7 @@ const DialogProductOrder: React.FC<dialogProduct> = ({ id }) => {
         setOrder(response?.data);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -1,6 +1,6 @@
+"use client";
 import { API_URL, IOrder } from "@/types/common";
 import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ export const useOrder = () => {
         setDataOrder(response?.data?.orders);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -67,7 +67,7 @@ export const useOrder = () => {
         fetchOrders();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -23,29 +23,43 @@ const FormLoginPage = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const response = await axios.post(`${API_URL}/api/v1/auth/sign-in`, {
-        email: data.email,
-        password: data.password,
-      });
-      if (response) {
-        const check = response?.data?.user?.roles?.includes("admin");
-        if (check) {
-          localStorage.setItem("user", JSON.stringify(response?.data?.user));
+      const responseSignIn = await axios.post(
+        `${API_URL}/api/v1/auth/sign-in`,
+        {
+          email: data.email,
+          password: data.password,
+        }
+      );
+      if (responseSignIn) {
+        const accessToken = responseSignIn?.data?.token?.accessToken;
+        const response = await axios.get(`${API_URL}/api/v1/user/isAdmin`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (response && response?.data?.data && typeof window !== "undefined") {
+          localStorage.setItem(
+            "user",
+            JSON.stringify(responseSignIn?.data?.user)
+          );
           localStorage.setItem(
             "accessToken",
-            JSON.stringify(response?.data?.token?.accessToken)
+            JSON.stringify(responseSignIn?.data?.token?.accessToken)
           );
           toast.success("login successfully");
           setTimeout(() => {
             router.push("/admin");
           }, 3000);
-        }
-        if (!check) {
+        } else {
           toast.error("you are not an admin");
         }
-      }
+      } else return;
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message || "An unexpected error occurred";
+        toast.error(errorMessage);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     }
   };
 

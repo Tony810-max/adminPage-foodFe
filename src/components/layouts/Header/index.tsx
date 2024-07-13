@@ -13,19 +13,18 @@ import { ROUTERS } from "@/types/routers";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const Header = () => {
-  const [user, setUser] = useState<IUser>();
   const router = useRouter();
-  useEffect(() => {
-    if (typeof window !== "undefined" && localStorage) {
-      const userStorage = localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user")!)
-        : null;
-      setUser(userStorage);
+  const [user, setUser] = React.useState<IUser>();
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userData = JSON.parse(localStorage?.getItem("user")!);
+      setUser(userData);
     }
   }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
@@ -33,16 +32,16 @@ const Header = () => {
   };
 
   return (
-    <div className="flex justify-end items-center gap-1 w-full">
+    <div className="flex justify-end items-center gap-1 w-full py-5">
       <span className="font-sans text-lg font-semibold capitalize">
-        Welcome back,{" "}
+        Welcome back,
       </span>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="flex items-center">
           <Button
             variant="outline"
-            className="capitalize font-sans text-lg font-semibold"
+            className="capitalize font-sans text-base font-semibold"
           >
             {user?.firstName} {user?.lastName}
             <ChevronDown size={18} />

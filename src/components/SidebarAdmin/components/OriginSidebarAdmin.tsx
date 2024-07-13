@@ -2,9 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-
 type sidebarItem = {
   name: string;
   to: string;
@@ -28,7 +27,7 @@ const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
   return (
     <motion.div
       className=" flex flex-col gap-2 overflow-hidden"
-      animate={{ width: opened ? "100%" : "0" }} 
+      animate={{ width: opened ? "100%" : "0" }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
       style={{ width: !opened ? "0" : "100%" }}
     >

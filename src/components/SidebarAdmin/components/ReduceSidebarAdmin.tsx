@@ -1,8 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
-import { AnimatePresence, motion, useCycle } from "framer-motion";
 
 type sidebarItem = {
   name: string;

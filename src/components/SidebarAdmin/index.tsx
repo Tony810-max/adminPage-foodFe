@@ -5,13 +5,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   AlignJustify,
   ClipboardList,
+  Factory,
   HomeIcon,
+  Milestone,
   Package2,
   PackageCheck,
   SquareArrowRight,
+  SquareUserRound,
   User,
 } from "lucide-react";
-import { iconContainerVariants, itemVariants } from "./types/const";
+import { itemVariants } from "./types/const";
 import OriginSidebarAdmin from "./components/OriginSidebarAdmin";
 import ReduceSidebarAdmin from "./components/ReduceSidebarAdmin";
 import Image from "next/image";
@@ -40,6 +43,14 @@ const DATA_SIDEBAR_ADMIN = [
     icon: <PackageCheck />,
   },
   { name: "User", to: "/admin/pages/user", id: 5, icon: <User /> },
+  { name: "post - blog", to: "/admin/pages/post", id: 6, icon: <Milestone /> },
+  { name: "publisher", to: "/admin/pages/publisher", id: 7, icon: <Factory /> },
+  {
+    name: "author",
+    to: "/admin/pages/author",
+    id: 8,
+    icon: <SquareUserRound />,
+  },
 ];
 
 export default function App() {
@@ -62,7 +73,6 @@ export default function App() {
       width: 100,
       transition: {
         type: "spring",
-        // ease: "easeOut",
         duration: 20,
       },
     },
