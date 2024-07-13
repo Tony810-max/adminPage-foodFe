@@ -1,3 +1,4 @@
+"use client";
 import { API_URL, IPublisherMain } from "@/types/common";
 import axios from "axios";
 import React from "react";

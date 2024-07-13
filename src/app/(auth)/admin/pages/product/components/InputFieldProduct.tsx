@@ -21,12 +21,18 @@ const InputFieldProduct: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={name}>{label}</label>
+      <label
+        htmlFor={name}
+        className="font-sans text-base capitalize font-semibold"
+      >
+        {label}
+      </label>
       <Input
         defaultValue={defaultValue}
         id={name}
         {...register(name)}
         type={type}
+        min={type === "number" ? 0 : ""}
       />
       {errorMessage && (
         <p className="font-sans text-red-700 capitalize italic">

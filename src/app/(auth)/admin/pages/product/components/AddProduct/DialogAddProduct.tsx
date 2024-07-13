@@ -1,7 +1,7 @@
+"use client";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
-import { CirclePlus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,8 +13,10 @@ import {
 import ModalAddProduct from "./ModalAddProduct";
 
 const DialogAddProduct = () => {
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant={"destructive"}
@@ -23,14 +25,14 @@ const DialogAddProduct = () => {
           Add product
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[44rem] overflow-auto">
         <DialogHeader>
           <DialogTitle>Add product</DialogTitle>
           <DialogDescription>
             Make changes to your product here. Click save when you`re done.
           </DialogDescription>
         </DialogHeader>
-        <ModalAddProduct />
+        <ModalAddProduct onSetOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

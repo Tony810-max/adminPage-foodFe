@@ -24,13 +24,26 @@ import { Input } from "@/components/ui/input";
 import { CategoryContext } from "@/context/categoryContex";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import { IAddProduct } from "../../types/common";
+import { IAddProduct, ISubmitData } from "../../types/common";
+import { AuthorContext } from "@/context/authorContext";
+import { PublisherContext } from "@/context/publisherContext";
+import { ProductContext } from "@/context/productContext";
 
-const ModalAddProduct = () => {
+interface IModalAddProduct {
+  onSetOpen: (value: boolean) => void;
+}
+
+const ModalAddProduct: React.FC<IModalAddProduct> = ({ onSetOpen }) => {
   const [file, setFile] = useState<FileList | null>(null);
-  // const { handleAddProduct, uploadImage } = useProduct();
-  const context = React.useContext(CategoryContext);
-  const dataCategory = context?.dataCategory;
+  const productContext = React.useContext(ProductContext);
+  const categoryContext = React.useContext(CategoryContext);
+  const authorContext = React.useContext(AuthorContext);
+  const publisherContext = React.useContext(PublisherContext);
+
+  const dataCategory = categoryContext?.dataCategory;
+  const dataAuthor = authorContext?.dataAuthor;
+  const dataPublisher = publisherContext?.dataPublisher;
+  const fetchProduct = productContext?.fetchProduct;
 
   const {
     register,
@@ -53,9 +66,9 @@ const ModalAddProduct = () => {
       );
 
       if (response) {
-        console.log(response);
         toast.success("Product added successfully");
-        // fetchProduct();
+        onSetOpen(false);
+        fetchProduct();
       }
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -68,8 +81,20 @@ const ModalAddProduct = () => {
     }
   };
 
-  const onSubmit = async (data: IAddProduct) => {
+  const onSubmit = async (data: ISubmitData) => {
     console.log(data);
+    const filterCategoryId = dataCategory?.categories?.filter(
+      (category) => category?.title === data?.categoryValue
+    );
+    const filterAuthorId = dataAuthor?.authors?.filter(
+      (author) => author?.name === data?.authorValue
+    );
+    const filterPublisherId = dataPublisher?.publishers?.filter(
+      (publisher) => publisher?.name === data?.publisherValue
+    );
+
+    filterCategoryId && console.log(filterCategoryId[0]?.id);
+
     let images = [];
     if (file) {
       images = await uploadImage(file);
@@ -82,11 +107,11 @@ const ModalAddProduct = () => {
       description: data.description,
       price: data.price,
       stock: data.stock,
-      categoryId: data?.categoryId,
       images: images,
-      discount: 10,
-      authorId: 1,
-      publisherId: 1,
+      discount: data.discount,
+      categoryId: filterCategoryId && filterCategoryId[0]?.id,
+      authorId: filterAuthorId && filterAuthorId[0]?.id,
+      publisherId: filterPublisherId && filterPublisherId[0]?.id,
     };
 
     await handleAddProduct(productData);
@@ -118,34 +143,13 @@ const ModalAddProduct = () => {
         type="text"
         errorMessage={errors?.title?.message}
       />
-      <Controller
-        name="categoryId"
-        control={control}
-        render={({ field }) => (
-          <Select
-            value={field.value?.toString()}
-            onValueChange={(value) => field.onChange(value)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a Category" />
-            </SelectTrigger>
-            <SelectContent ref={field.ref}>
-              <SelectGroup>
-                <SelectLabel>Category</SelectLabel>
-                {dataCategory?.categories?.map((category) => (
-                  <SelectItem
-                    key={category?.id}
-                    value={category?.id?.toString()}
-                  >
-                    {category?.title}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        )}
+      <InputFieldProduct
+        label="discount"
+        name="discount"
+        register={register}
+        type="number"
+        errorMessage={errors?.title?.message}
       />
-
       <InputFieldProduct
         label="stock"
         name="stock"
@@ -153,9 +157,114 @@ const ModalAddProduct = () => {
         type="number"
         errorMessage={errors?.stock?.message}
       />
+      <InputFieldProduct
+        label="price"
+        name="price"
+        register={register}
+        type="number"
+        errorMessage={errors?.price?.message}
+      />
+
+      <div className="space-y-2">
+        <label className="font-sans text-base font-semibold">Author</label>
+        <Controller
+          name="authorValue"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value?.toString()}
+              onValueChange={(value) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder="Select a Category"
+                  className="w-full"
+                />
+              </SelectTrigger>
+              <SelectContent ref={field.ref}>
+                <SelectGroup>
+                  <SelectLabel>Author</SelectLabel>
+                  {dataAuthor?.authors?.map((author) => (
+                    <SelectItem key={author?.id} value={author?.name}>
+                      {author?.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="font-sans text-base font-semibold">Publisher</label>
+        <Controller
+          name="publisherValue"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value?.toString()}
+              onValueChange={(value) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder="Select a Category"
+                  className="w-full"
+                />
+              </SelectTrigger>
+              <SelectContent ref={field.ref}>
+                <SelectGroup>
+                  <SelectLabel>Category</SelectLabel>
+                  {dataPublisher?.publishers?.map((publisher) => (
+                    <SelectItem key={publisher?.id} value={publisher?.name}>
+                      {publisher?.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="font-sans text-base font-semibold">Category</label>
+        <Controller
+          name="categoryValue"
+          control={control}
+          render={({ field }) => (
+            <Select
+              value={field.value?.toString()}
+              onValueChange={(value) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder="Select a Category"
+                  className="w-full"
+                />
+              </SelectTrigger>
+              <SelectContent ref={field.ref}>
+                <SelectGroup>
+                  <SelectLabel>Category</SelectLabel>
+                  {dataCategory?.categories?.map((category) => (
+                    <SelectItem key={category?.id} value={category?.title}>
+                      {category?.title}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="description">description</label>
+        <label
+          htmlFor="description"
+          className="font-sans text-base font-semibold"
+        >
+          Description
+        </label>
         <Textarea
           placeholder="Type your message here."
           {...register("description")}
@@ -166,14 +275,6 @@ const ModalAddProduct = () => {
           </p>
         )}
       </div>
-
-      <InputFieldProduct
-        label="price"
-        name="price"
-        register={register}
-        type="number"
-        errorMessage={errors?.price?.message}
-      />
 
       <div className="flex flex-col gap-2">
         <label htmlFor="image">Image</label>

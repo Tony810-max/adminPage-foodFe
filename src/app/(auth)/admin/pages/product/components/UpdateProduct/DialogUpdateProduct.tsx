@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Dialog,
@@ -7,14 +8,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import ModalUpdateProduct from "./ModalUpdateProduct";
 import { IProductSub } from "@/types/common";
-import useProduct from "@/hook/useProduct";
 import { DialogUpdateProps } from "../../types/common";
+import { Pencil } from "lucide-react";
+import { ProductContext } from "@/context/productContext";
 
 const DialogUpdateProduct: React.FC<DialogUpdateProps> = ({ id }) => {
-  const { dataProduct } = useProduct();
+  const [open, setOpen] = React.useState(false);
+  const productContext = React.useContext(ProductContext);
+  const dataProduct = productContext?.dataProduct;
+
   const [dataCurrProduct, setDataCurrProduct] = React.useState<IProductSub[]>(
     []
   );
@@ -26,15 +30,14 @@ const DialogUpdateProduct: React.FC<DialogUpdateProps> = ({ id }) => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant={"destructive"}
-          className="font-sans text-base"
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild className="text-center w-full">
+        <Pencil
+          color="orange"
+          size={"18"}
+          className="hover:cursor-pointer hover:opacity-70 "
           onClick={handleUpdateForm}
-        >
-          Update
-        </Button>
+        />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

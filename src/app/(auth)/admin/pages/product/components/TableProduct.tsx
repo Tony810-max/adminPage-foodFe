@@ -16,6 +16,7 @@ import ViewDetailProduct from "./ViewProduct/ViewDetailProduct";
 import DeleteAlertProduct from "./DeleteProduct.tsx/DeleteAlertProduct";
 import ViewAuthorProduct from "./ViewAuthorProduct";
 import ViewCategoryProduct from "./ViewCategoryProduct";
+import ViewPublisher from "./ViewPublisher";
 
 const TableProduct = () => {
   const context = React.useContext(ProductContext);
@@ -37,6 +38,9 @@ const TableProduct = () => {
           </TableHead>
           <TableHead className="font-sans text-center text-sm capitalize">
             author
+          </TableHead>
+          <TableHead className="font-sans text-center text-sm capitalize">
+            publisher
           </TableHead>
           <TableHead className="font-sans text-center text-sm capitalize">
             infomation product
@@ -66,9 +70,11 @@ const TableProduct = () => {
               <ViewAuthorProduct data={product} />
             </TableCell>
             <TableCell className="font-sans text-center text-sm capitalize">
+              <ViewPublisher data={product} />
+            </TableCell>
+            <TableCell className="font-sans text-center text-sm capitalize">
               <ViewDetailProduct data={product} />
             </TableCell>
-          
             <TableCell className="font-sans text-center text-sm capitalize">
               <DialogUpdateProduct id={product?.id} />
             </TableCell>

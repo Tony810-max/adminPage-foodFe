@@ -17,12 +17,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { AddProduct, IProductSub, IUpdateProduct } from "@/types/common";
+import { API_URL, AddProduct, IProductSub } from "@/types/common";
 
 import Image from "next/image";
-import useProduct from "@/hook/useProduct";
 import { toast } from "react-toastify";
 import { CategoryContext } from "@/context/categoryContex";
+import { ISubmitData } from "../../types/common";
+import axios, { AxiosError } from "axios";
 
 interface ModalUpdateProps {
   data: IProductSub[];
@@ -40,33 +41,72 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
     defaultValues: {
       title: data[0].title,
       price: Number(data[0].price),
-      categoryId: data[0].category.id,
+      categoryValue: data[0].category.title,
       stock: data[0].stock,
       description: data[0].description,
     },
   });
   const [file, setFile] = useState<FileList | null>(null);
-  const { uploadImage, handleUpdateProduct } = useProduct();
   const context = React.useContext(CategoryContext);
   const dataCategory = context?.dataCategory;
 
-  const onSubmit = async (data: IUpdateProduct) => {
-    let images = [];
-    if (file) {
-      images = await uploadImage(file);
-    } else {
-      return toast.error("Image not change");
+  const handleUpdateProduct = async (id: number, productData: AddProduct) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
+      const response = await axios.patch(
+        `${API_URL}/api/v1/products/${id}`,
+        productData,
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      if (response) {
+        toast.success("Product updated successfully");
+        // fetchProduct();
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError?.response?.status === 403) {
+        toast.error("Access token is invalid");
+        return;
+      }
+      console.error(error);
     }
+  };
 
-    const productData = {
-      title: data.title,
-      description: data.description,
-      price: Number(data.price),
-      stock: Number(data.stock),
-      categoryId: data?.categoryId,
-      images: images,
-    };
-    await handleUpdateProduct(id, productData);
+  const uploadImage = async (file: FileList) => {
+    const CLOUD_NAME = "dehamgr2z";
+    const PRESET_NAME = "pn5guixu";
+    const FOLDER_NAME = "image_FoodFe";
+    const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+    const uploadPromises = Array.from(file).map((file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", FOLDER_NAME);
+      formData.append("upload_preset", PRESET_NAME);
+      return axios.post(url, formData).then((response) => response.data.url);
+    });
+
+    return Promise.all(uploadPromises);
+  };
+
+  const onSubmit = async (data: ISubmitData) => {
+    console.log(data);
+    // let images = [];
+    // if (file) {
+    //   images = await uploadImage(file);
+    // } else {
+    //   return toast.error("Image not change");
+    // }
+
+    // const productData = {
+    //   title: data.title,
+    //   description: data.description,
+    //   price: Number(data.price),
+    //   stock: Number(data.stock),
+    //   categoryId: 1,
+    //   images: images,
+    // };
+    // await handleUpdateProduct(id, productData);
   };
 
   return (
@@ -79,12 +119,11 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
         errorMessage={errors?.title?.message}
       />
       <Controller
-        name="categoryId"
+        name="categoryValue"
         control={control}
         render={({ field }) => (
           <Select
             {...field}
-            value=""
             onValueChange={(value: string) => field.onChange(value)}
           >
             <SelectTrigger className="w-[180px]">
@@ -94,10 +133,7 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
               <SelectGroup>
                 <SelectLabel>Category</SelectLabel>
                 {dataCategory?.categories?.map((category) => (
-                  <SelectItem
-                    key={category?.id}
-                    value={category?.id?.toString()}
-                  >
+                  <SelectItem key={category?.id} value={category?.title}>
                     {category?.title}
                   </SelectItem>
                 ))}

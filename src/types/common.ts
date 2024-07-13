@@ -31,13 +31,7 @@ export type AddProduct = {
   categoryId: number;
 };
 
-export type IUpdateProduct = {
-  categoryId: number;
-  description: string;
-  price: number;
-  stock: number;
-  title: string;
-};
+
 
 export interface ICategory {
   id: number;
