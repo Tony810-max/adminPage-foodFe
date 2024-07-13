@@ -1,69 +1,47 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { API_URL, IOrder } from "@/types/common";
+import { IProductDetail } from "@/types/common";
 import InputDialogProduct from "./InputDialogProduct";
 
 interface dialogProduct {
-  id: number;
+  data: IProductDetail[];
 }
 
-const DialogProductOrder: React.FC<dialogProduct> = ({ id }) => {
-  const [order, setOrder] = useState<IOrder | undefined>();
-  const handleViewProduct = async () => {
-    try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
-      const response = await axios.get(`${API_URL}/api/v1/orders/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (response) {
-        setOrder(response?.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+const DialogProductOrder: React.FC<dialogProduct> = ({ data }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant={"link"}
-          className="font-sans text-base text-center hover:text-blue-600"
-          onClick={handleViewProduct}
-        >
-          View detail
+        <Button variant={"link"} className="font-sans text-sm text-center ">
+          View Detail
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Product</DialogTitle>
+          <DialogTitle className="font-sans text-base text-center">
+            Product Detail Order
+          </DialogTitle>
         </DialogHeader>
-        {order?.products?.map((product) => {
+        {data?.map((product) => {
           return (
             <div key={product?.id}>
               <InputDialogProduct
-                index={product?.id}
                 title={product?.product.title}
                 image={product?.product.images[0]}
                 quantity={product?.product_quantity}
+                stock={product?.product?.stock}
               />
             </div>
           );
         })}
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

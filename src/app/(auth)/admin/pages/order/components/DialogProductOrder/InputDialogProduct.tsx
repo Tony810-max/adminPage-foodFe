@@ -4,48 +4,42 @@ import Image from "next/image";
 import React from "react";
 
 interface inputDialogProps {
-  index: number;
   title: string;
   image: string;
   quantity: number;
+  stock: number;
 }
 
 const InputDialogProduct: React.FC<inputDialogProps> = ({
-  index,
   title,
   image,
   quantity,
+  stock,
 }) => {
   return (
-    <div className="space-y-4">
-      <div className="flex gap-2">
+    <div className="space-y-4 grid grid-cols-2 gap-2">
+      <div className="flex flex-col gap-2 justify-between row-span-2 h-full">
         <div className="space-y-2">
           <Label htmlFor="name" className="text-right">
-            Name Product {index}
+            Name Product
           </Label>
-          <Input
-            id="name"
-            value={title}
-            defaultValue="Pedro Duarte"
-            className="col-span-3"
-            disabled
-          />
+          <Input id="name" value={title} className="col-span-3" disabled />
         </div>
         <div className="space-y-2">
           <Label htmlFor="name" className="text-right">
             Quantity
           </Label>
-          <Input
-            id="name"
-            value={quantity}
-            defaultValue="Pedro Duarte"
-            className="col-span-3"
-            disabled
-          />
+          <Input id="name" value={quantity} className="col-span-3" disabled />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-right">
+            Stock
+          </Label>
+          <Input id="name" value={stock} className="col-span-3" disabled />
         </div>
       </div>
-      <div className="relative w-14 h-14">
-        <Image src={image} alt="" className="" fill unoptimized priority />
+      <div className="relative w-full h-full row-span-2">
+        <Image src={image} alt="imgProductOrder" fill unoptimized priority />
       </div>
     </div>
   );

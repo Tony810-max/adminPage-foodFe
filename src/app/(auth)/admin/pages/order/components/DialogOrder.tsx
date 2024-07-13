@@ -4,36 +4,26 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Pencil } from "lucide-react";
+import FormUpdateStatus from "./DialogProductOrder/FormUpdateStatus";
+import { IDialogUpdate } from "../types/common";
 
-import { Button } from "@/components/ui/button";
-import { useOrder } from "@/hook/useOrder";
-
-interface dialogProps {
-  id: number;
-}
-
-const DialogOrder: React.FC<dialogProps> = ({ id }) => {
-  const { updateStatusOrder, setStatus } = useOrder();
-
+const UpdateDialogOrder: React.FC<IDialogUpdate> = ({ id }) => {
+  const [open, setOpen] = React.useState(false);
+  
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit Status</Button>
+        <Pencil
+          size={20}
+          color="orange"
+          className="hover:cursor-pointer hover:opacity-70"
+        />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -42,25 +32,10 @@ const DialogOrder: React.FC<dialogProps> = ({ id }) => {
             Make changes to your status here. Click save when you`re done.
           </DialogDescription>
         </DialogHeader>
-        <Select onValueChange={(status) => setStatus(status)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Status</SelectLabel>
-              <SelectItem value="shipped">Shipped</SelectItem>
-              <SelectItem value="delivered">Delivered</SelectItem>
-              <SelectItem value="cancelled">Cancelled </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <DialogFooter onClick={() => updateStatusOrder(id)}>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        <FormUpdateStatus id={id} onSetOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default DialogOrder;
+export default UpdateDialogOrder;

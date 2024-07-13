@@ -126,11 +126,17 @@ export interface IOrder {
   id: number;
   orderAt: string;
   status: string;
+  type: string;
+  isPaid: string;
   shippedAt: null;
   deliveredAt: null;
   shippingAddress: IShippingAddress;
   user: IUser;
   products: IProductDetail[];
+}
+export interface IOderMain {
+  orders: IOrder[];
+  meta: IMeta;
 }
 
 export interface IPost {
