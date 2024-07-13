@@ -21,7 +21,7 @@ const ViewDetailProduct: React.FC<IViewDetail> = ({ data }) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Detail Product</DialogTitle>
           <DialogDescription>
             {`This is detail product ${data?.title}`}
           </DialogDescription>

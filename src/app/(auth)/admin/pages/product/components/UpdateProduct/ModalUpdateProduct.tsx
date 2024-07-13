@@ -17,20 +17,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { API_URL, AddProduct, IProductSub } from "@/types/common";
+import { API_URL, IProductSub } from "@/types/common";
 
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { CategoryContext } from "@/context/categoryContex";
-import { ISubmitData } from "../../types/common";
+import { IAddProduct, ISubmitData } from "../../types/common";
 import axios, { AxiosError } from "axios";
+import { Label } from "@/components/ui/label";
+import { PublisherContext } from "@/context/publisherContext";
+import { AuthorContext } from "@/context/authorContext";
+import { ProductContext } from "@/context/productContext";
 
 interface ModalUpdateProps {
   data: IProductSub[];
   id: number;
+  onSetOpen: (value: boolean) => void;
 }
 
-const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
+const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({
+  data,
+  id,
+  onSetOpen,
+}) => {
   const {
     register,
     handleSubmit,
@@ -42,15 +51,27 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
       title: data[0].title,
       price: Number(data[0].price),
       categoryValue: data[0].category.title,
+      authorValue: data[0].author.name,
+      discount: Number(data[0].discount),
+      publisherValue: data[0].publisher?.name,
       stock: data[0].stock,
       description: data[0].description,
     },
   });
   const [file, setFile] = useState<FileList | null>(null);
-  const context = React.useContext(CategoryContext);
-  const dataCategory = context?.dataCategory;
+  const productContext = React.useContext(ProductContext);
+  const categoryContext = React.useContext(CategoryContext);
+  const publisherContext = React.useContext(PublisherContext);
+  const authorContext = React.useContext(AuthorContext);
 
-  const handleUpdateProduct = async (id: number, productData: AddProduct) => {
+  const dataCategory = categoryContext?.dataCategory;
+
+  const fetchProduct = productContext?.fetchProduct;
+
+  const dataPublisher = publisherContext?.dataPublisher;
+  const dataAuthor = authorContext?.dataAuthor;
+
+  const handleUpdateProduct = async (productData: IAddProduct) => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
       const response = await axios.patch(
@@ -59,8 +80,10 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       if (response) {
+        console.log(response);
         toast.success("Product updated successfully");
-        // fetchProduct();
+        onSetOpen(false);
+        fetchProduct();
       }
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -70,6 +93,38 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
       }
       console.error(error);
     }
+  };
+
+  const onSubmit = async (dataSubmit: ISubmitData) => {
+    let images = [];
+    if (file) {
+      images = await uploadImage(file);
+    } else {
+      images = data[0]?.images;
+    }
+
+    const filterCategoryId = dataCategory?.categories?.filter(
+      (category) => category?.title === dataSubmit?.categoryValue
+    );
+    const filterAuthorId = dataAuthor?.authors?.filter(
+      (author) => author?.name === dataSubmit?.authorValue
+    );
+    const filterPublisherId = dataPublisher?.publishers?.filter(
+      (publisher) => publisher?.name === dataSubmit?.publisherValue
+    );
+
+    const productData = {
+      title: dataSubmit.title,
+      description: dataSubmit.description,
+      price: Number(dataSubmit.price),
+      discount: Number(dataSubmit.discount),
+      stock: Number(dataSubmit.stock),
+      images: images,
+      categoryId: filterCategoryId && filterCategoryId[0]?.id,
+      authorId: filterAuthorId && filterAuthorId[0]?.id,
+      publisherId: filterPublisherId && filterPublisherId[0]?.id,
+    };
+    await handleUpdateProduct(productData);
   };
 
   const uploadImage = async (file: FileList) => {
@@ -89,26 +144,6 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
     return Promise.all(uploadPromises);
   };
 
-  const onSubmit = async (data: ISubmitData) => {
-    console.log(data);
-    // let images = [];
-    // if (file) {
-    //   images = await uploadImage(file);
-    // } else {
-    //   return toast.error("Image not change");
-    // }
-
-    // const productData = {
-    //   title: data.title,
-    //   description: data.description,
-    //   price: Number(data.price),
-    //   stock: Number(data.stock),
-    //   categoryId: 1,
-    //   images: images,
-    // };
-    // await handleUpdateProduct(id, productData);
-  };
-
   return (
     <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
       <InputFieldProduct
@@ -118,29 +153,116 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
         type="text"
         errorMessage={errors?.title?.message}
       />
-      <Controller
-        name="categoryValue"
-        control={control}
-        render={({ field }) => (
-          <Select
-            {...field}
-            onValueChange={(value: string) => field.onChange(value)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Category</SelectLabel>
-                {dataCategory?.categories?.map((category) => (
-                  <SelectItem key={category?.id} value={category?.title}>
-                    {category?.title}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        )}
+      <div className="space-y-2">
+        <Label className="font-sans text-base">Category</Label>
+        <Controller
+          name="categoryValue"
+          control={control}
+          render={({ field }) => (
+            <Select
+              {...field}
+              onValueChange={(value: string) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Category</SelectLabel>
+                  {dataCategory?.categories?.map((category) => (
+                    <SelectItem
+                      key={category?.id}
+                      value={category?.title}
+                      className="font-sans capitalize"
+                    >
+                      {category?.title}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label className="font-sans text-base">Author</Label>
+        <Controller
+          name="authorValue"
+          control={control}
+          render={({ field }) => (
+            <Select
+              {...field}
+              onValueChange={(value: string) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Category</SelectLabel>
+                  {dataAuthor?.authors?.map((author) => (
+                    <SelectItem
+                      key={author?.id}
+                      value={author?.name}
+                      className="font-sans capitalize"
+                    >
+                      {author?.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label className="font-sans text-base">Publisher</Label>
+        <Controller
+          name="publisherValue"
+          control={control}
+          render={({ field }) => (
+            <Select
+              {...field}
+              onValueChange={(value: string) => field.onChange(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Category</SelectLabel>
+                  {dataPublisher?.publishers?.map((publisher) => (
+                    <SelectItem
+                      key={publisher?.id}
+                      value={publisher?.name}
+                      className="font-sans capitalize"
+                    >
+                      {publisher?.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+      </div>
+
+      <InputFieldProduct
+        label="price"
+        name="price"
+        register={register}
+        type="number"
+        errorMessage={errors?.price?.message}
+      />
+
+      <InputFieldProduct
+        label="discount"
+        name="discount"
+        register={register}
+        type="number"
+        errorMessage={errors?.price?.message}
       />
 
       <InputFieldProduct
@@ -152,7 +274,7 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
       />
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="description">description</label>
+        <label htmlFor="description">Description</label>
         <Textarea
           placeholder="Type your message here."
           {...register("description")}
@@ -163,14 +285,6 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
           </p>
         )}
       </div>
-
-      <InputFieldProduct
-        label="price"
-        name="price"
-        register={register}
-        type="number"
-        errorMessage={errors?.price?.message}
-      />
 
       <div className="flex flex-col gap-2">
         <label htmlFor="image">Image</label>
@@ -213,7 +327,7 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({ data, id }) => {
       </div>
       <div className="flex justify-end">
         <Button variant={"destructive"} type="submit">
-          Add product
+          update
         </Button>
       </div>
     </form>

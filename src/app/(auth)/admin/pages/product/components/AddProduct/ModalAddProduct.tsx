@@ -82,7 +82,6 @@ const ModalAddProduct: React.FC<IModalAddProduct> = ({ onSetOpen }) => {
   };
 
   const onSubmit = async (data: ISubmitData) => {
-    console.log(data);
     const filterCategoryId = dataCategory?.categories?.filter(
       (category) => category?.title === data?.categoryValue
     );
@@ -92,8 +91,6 @@ const ModalAddProduct: React.FC<IModalAddProduct> = ({ onSetOpen }) => {
     const filterPublisherId = dataPublisher?.publishers?.filter(
       (publisher) => publisher?.name === data?.publisherValue
     );
-
-    filterCategoryId && console.log(filterCategoryId[0]?.id);
 
     let images = [];
     if (file) {

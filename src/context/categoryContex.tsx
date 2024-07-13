@@ -6,11 +6,15 @@ import React, { ReactNode } from "react";
 interface ICategory {
   dataCategory?: ICategoryMain | null;
   fetchCategory: () => void;
+  setDataCategory: React.Dispatch<
+    React.SetStateAction<ICategoryMain | undefined>
+  >;
 }
 
 export const CategoryContext = React.createContext<ICategory>({
   dataCategory: null,
   fetchCategory: () => {},
+  setDataCategory: () => {},
 });
 
 const CategoryProvider = ({ children }: { children: ReactNode }) => {
@@ -20,7 +24,6 @@ const CategoryProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await axios.get(`${API_URL}/api/v1/category`);
       if (response) {
-        console.log(response);
         setDataCategory(response?.data);
       }
     } catch (error) {
@@ -36,6 +39,7 @@ const CategoryProvider = ({ children }: { children: ReactNode }) => {
     return {
       dataCategory,
       fetchCategory,
+      setDataCategory,
     };
   }, [dataCategory, fetchCategory]);
 

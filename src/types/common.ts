@@ -22,17 +22,6 @@ export interface IUsers {
   meta: IMeta;
 }
 
-export type AddProduct = {
-  title: string;
-  description: string;
-  price: number;
-  stock: number;
-  images: string[];
-  categoryId: number;
-};
-
-
-
 export interface ICategory {
   id: number;
   title: string;

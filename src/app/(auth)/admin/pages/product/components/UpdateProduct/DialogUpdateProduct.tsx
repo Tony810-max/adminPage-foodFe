@@ -39,14 +39,18 @@ const DialogUpdateProduct: React.FC<DialogUpdateProps> = ({ id }) => {
           onClick={handleUpdateForm}
         />
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] max-h-[44rem] overflow-auto">
         <DialogHeader>
           <DialogTitle>Update product</DialogTitle>
           <DialogDescription>
             Make changes to your product here. Click save when you`re done.
           </DialogDescription>
         </DialogHeader>
-        <ModalUpdateProduct data={dataCurrProduct} id={id} />
+        <ModalUpdateProduct
+          data={dataCurrProduct}
+          id={id}
+          onSetOpen={setOpen}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 
 interface ILabelInput {
   title: string;
-  value: string;
+  value: string | number;
 }
 
 const LabelInput: React.FC<ILabelInput> = ({ title, value }) => {

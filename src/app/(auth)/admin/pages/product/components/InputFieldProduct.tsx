@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
 
@@ -21,12 +22,12 @@ const InputFieldProduct: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <label
+      <Label
         htmlFor={name}
         className="font-sans text-base capitalize font-semibold"
       >
         {label}
-      </label>
+      </Label>
       <Input
         defaultValue={defaultValue}
         id={name}
