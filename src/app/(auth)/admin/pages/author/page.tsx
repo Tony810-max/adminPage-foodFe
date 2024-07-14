@@ -3,12 +3,16 @@ import React from "react";
 import { AuthorProvider } from "@/context/authorContext";
 import CreateAuthor from "./components/CreateAuthor";
 import TableDataAuthor from "./components/TableDataAuthor";
+import SearchAuthor from "./components/SearchAuthor";
 
 const AuthorPage = () => {
   return (
     <div className="space-y-4">
       <AuthorProvider>
-        <CreateAuthor />
+        <div className="flex items-center justify-between">
+          <CreateAuthor />
+          <SearchAuthor />
+        </div>
         <TableDataAuthor />
       </AuthorProvider>
     </div>

@@ -9,31 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import axios from "axios";
-import { API_URL, IUsers } from "@/types/common";
 import { Badge } from "@/components/ui/badge";
 import InfoUserDialog from "./InfoUserDialog";
+import { useAdmin } from "@/hook/useAdmin";
 
 const DataTableAdmin = () => {
-  const [dataAdmin, setDataAdmin] = React.useState<IUsers>();
-
-  const fetchAdmin = async () => {
-    try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
-      const response = await axios.get(`${API_URL}/api/v1/user/admins`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      if (response) {
-        setDataAdmin(response?.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchAdmin();
-  }, []);
+  const { dataAdmin } = useAdmin();
 
   return (
     <Table>

@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { dataAddCategory } from "../types/common";
+import { dataAddCategory } from "../../types/common";
 import { toast } from "react-toastify";
 import { API_URL } from "@/types/common";
 import axios from "axios";
-import { schemaCategory } from "../types/schemaCategory";
+import { schemaCategory } from "../../types/schemaCategory";
 import { CategoryContext } from "@/context/categoryContex";
 
 interface modalUpdateProps {
@@ -39,7 +39,7 @@ const ModaUpdateCategory: React.FC<modalUpdateProps> = ({
       setAccessToken(token);
     }
   }, []);
-  
+
   const handleUpdateCategory = async (data: dataAddCategory) => {
     try {
       if (!accessToken) {

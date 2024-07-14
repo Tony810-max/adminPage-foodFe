@@ -1,5 +1,3 @@
-
-
 export const itemVariants = {
   closed: {
     opacity: 0,

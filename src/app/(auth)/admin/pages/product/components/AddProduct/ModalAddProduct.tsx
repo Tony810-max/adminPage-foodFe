@@ -55,7 +55,6 @@ const ModalAddProduct: React.FC<IModalAddProduct> = ({ onSetOpen }) => {
   });
 
   const handleAddProduct = async (productData: IAddProduct) => {
-    console.log("productData", productData);
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
 

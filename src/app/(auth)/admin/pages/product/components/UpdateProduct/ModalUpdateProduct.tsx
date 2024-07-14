@@ -80,7 +80,6 @@ const ModalUpdateProduct: React.FC<ModalUpdateProps> = ({
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
       if (response) {
-        console.log(response);
         toast.success("Product updated successfully");
         onSetOpen(false);
         fetchProduct();

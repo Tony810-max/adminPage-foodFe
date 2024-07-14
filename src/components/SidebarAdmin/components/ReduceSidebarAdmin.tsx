@@ -25,15 +25,15 @@ const ReduceSidebarAdmin: React.FC<ReduceSidebarAdmin> = ({
   return (
     <div className="w-full flex flex-col items-center gap-2 min-w-3">
       {data?.map((item) => (
-        <Link
-          href={item?.to}
-          key={item?.id}
-        >
+        <Link href={item?.to} key={item?.id}>
           <Button
             variant={"outline"}
-            className={cn("w-full flex justify-between ", {
-              "bg-orange-500 text-white": valueParam === item?.name,
-            })}
+            className={cn(
+              "w-full flex justify-between hover:hover:bg-orange-500 hover:text-white",
+              {
+                "bg-orange-500 text-white": valueParam === item?.name,
+              }
+            )}
             onClick={() => {
               onSetValueParam(item?.name);
               localStorage.setItem("selectedItem", item?.name);

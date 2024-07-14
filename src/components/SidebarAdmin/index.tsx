@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   AlignJustify,
@@ -54,8 +54,8 @@ const DATA_SIDEBAR_ADMIN = [
 ];
 
 export default function App() {
-  const [opened, setOpened] = useState(false);
-  const [valueParam, setValueParam] = useState<string>("");
+  const [opened, setOpened] = React.useState(false);
+  const [valueParam, setValueParam] = React.useState<string>("Home");
   const handleClick = () => {
     setOpened(!opened);
   };
@@ -78,12 +78,13 @@ export default function App() {
     },
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     const savedValueParam = localStorage.getItem("selectedItem");
     if (savedValueParam) {
       setValueParam(savedValueParam);
     }
-  }, []);
+  }, [valueParam]);
+
   return (
     <div className=" border  border-red-300 px-5 py-4 shadow-lg">
       <div className="relative  aspect-[4/3]">

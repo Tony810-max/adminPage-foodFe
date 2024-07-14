@@ -9,8 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import ModaUpdateCategory from "./ModaUpdateCategory";
 import { Pen } from "lucide-react";
+import ModaUpdateCategory from "./ModaUpdateCategory";
 
 interface dialogUpdateProps {
   id: number;

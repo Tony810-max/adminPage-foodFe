@@ -35,9 +35,12 @@ const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
         <Link href={item?.to} key={item?.id}>
           <Button
             variant={"outline"}
-            className={cn("w-full flex gap-3 justify-between ", {
-              "bg-orange-500 text-white": valueParam === item?.name,
-            })}
+            className={cn(
+              "w-full flex gap-3 justify-between hover:hover:bg-orange-500 hover:text-white",
+              {
+                "bg-orange-500 text-white": valueParam === item?.name,
+              }
+            )}
             onClick={() => {
               onSetValueParam(item?.name);
               localStorage.setItem("selectedItem", item?.name);

@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaCategory } from "../types/schemaCategory";
+import { schemaCategory } from "../../types/schemaCategory";
 import axios from "axios";
 import { API_URL } from "@/types/common";
 import { toast } from "react-toastify";
-import { dataAddCategory } from "../types/common";
+import { dataAddCategory } from "../../types/common";
 
 interface IModalCategory {
   onSetOpen: (value: boolean) => void;

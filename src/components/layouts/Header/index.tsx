@@ -28,6 +28,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
+    localStorage.setItem("selectedItem", "Home");
     router.push("/login");
   };
 
@@ -50,12 +51,7 @@ const Header = () => {
         <DropdownMenuContent className="w-56">
           <DropdownMenuRadioGroup>
             <DropdownMenuRadioItem value="top">
-              <Link
-                href={ROUTERS.PROFILE}
-                className="cursor-pointer text-base font-sans font-semibold"
-              >
-                Profile
-              </Link>
+              Change Password
             </DropdownMenuRadioItem>
             <DropdownMenuRadioItem
               value="bottom"

@@ -122,6 +122,16 @@ export interface IProductDetail {
   product: IProducts;
 }
 
+export interface IUserDataPerDay {
+  date: string;
+  count: number;
+}
+
+export interface IDailyRevenue {
+  date: string;
+  revenue: number;
+}
+
 export interface IOrder {
   id: number;
   orderAt: string;

@@ -30,7 +30,6 @@ const FormUpdateStatus: React.FC<IUpdateOrder> = ({ id, onSetOpen }) => {
   const [status, setStatus] = React.useState<string>();
   const context = React.useContext(OderContext);
   const fetchOrder = context.fetchOrders;
-  console.log(status);
 
   const updateStatusOrder = async (data: { status: string }) => {
     try {
