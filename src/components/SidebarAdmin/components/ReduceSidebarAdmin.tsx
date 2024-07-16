@@ -25,7 +25,7 @@ const ReduceSidebarAdmin: React.FC<ReduceSidebarAdmin> = ({
   return (
     <div className="w-full flex flex-col items-center gap-2 min-w-3">
       {data?.map((item) => (
-        <Link href={item?.to} key={item?.id}>
+        <Link href={`${item?.to}?page=1`} key={item?.id}>
           <Button
             variant={"outline"}
             className={cn(

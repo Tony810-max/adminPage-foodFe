@@ -19,7 +19,7 @@ export interface IUser {
 
 export interface IUsers {
   users: IUser[];
-  meta: IMeta;
+  meta: IMetas;
 }
 
 export interface ICategory {
@@ -33,7 +33,7 @@ export interface ICategory {
 
 export interface ICategoryMain {
   categories: ICategory[];
-  meta: IMeta;
+  meta: IMetas;
 }
 
 export interface IAuth {
@@ -57,7 +57,7 @@ export interface IPublisher {
 
 export interface IPublisherMain {
   publishers: IPublisher[];
-  meta: IMeta;
+  meta: IMetas;
 }
 
 export interface IShippingAddress {
@@ -146,7 +146,7 @@ export interface IOrder {
 }
 export interface IOderMain {
   orders: IOrder[];
-  meta: IMeta;
+  meta: IMetas;
 }
 
 export interface IPost {
@@ -166,7 +166,7 @@ export interface IPost {
 
 export interface IAuthor {
   authors: IAuth[];
-  meta: IMeta;
+  meta: IMetas;
 }
 
 export interface ILike {
@@ -181,11 +181,18 @@ export interface ILikeInfo {
 
 export interface IPostMain {
   posts: IPost[];
-  meta: IMeta;
+  meta: IMetas;
   likesInfo: ILikeInfo[];
 }
 
 export interface IMeta {
+  limit: number;
+  totalItems: number;
+  totalPage: number;
+  currentPage: number;
+}
+
+export interface IMetas {
   limit: number;
   totalItems: number;
   totalPages: number;

@@ -8,8 +8,9 @@ import DataTableAdmin from "./components/DataTableAdmin";
 import SearchUser from "./components/SearchUser";
 
 const UserPage = () => {
-  const [tabCurr, setTabCurr] = React.useState("actived");
+  const [tabCurr, setTabCurr] = React.useState("user actived");
   const [tabAdmin, setTabAdmin] = React.useState("");
+  const [activeDelte, setActiveDelete] = React.useState(true);
 
   return (
     <div className="space-y-4">
@@ -20,19 +21,17 @@ const UserPage = () => {
             tabCurr={tabCurr}
             onSetTabAdmin={setTabAdmin}
             tabAdmin={tabAdmin}
+            onSetActiveDelete={setActiveDelete}
           />
           <SearchUser />
         </div>
-        {tabAdmin === "list user deleted" ||
-        tabAdmin === "administrator list" ? (
-          <>
-            {tabAdmin === "list user deleted" ? (
-              <DataTableUserDelete />
-            ) : (
-              <DataTableAdmin />
-            )}
-          </>
+        {tabAdmin === "user delete actived" ||
+        tabAdmin === "user delete not actived" ? (
+          <DataTableUserDelete activeDelte={activeDelte} />
         ) : (
+          <DataTableAdmin />
+        )}
+        {(tabCurr === "user actived" || tabCurr === "user not actived") && (
           <DataTableUser tabCurr={tabCurr} />
         )}
       </UserProvider>

@@ -1,6 +1,7 @@
 "use client";
 import { API_URL, ICategoryMain } from "@/types/common";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import React, { ReactNode } from "react";
 
 interface ICategory {
@@ -22,11 +23,13 @@ export const CategoryContext = React.createContext<ICategory>({
 const CategoryProvider = ({ children }: { children: ReactNode }) => {
   const [dataCategory, setDataCategory] = React.useState<ICategoryMain>();
   const [searchValue, setSearchValue] = React.useState<string>("");
+  const search = useSearchParams();
+  const page = search.get("page");
 
   const fetchCategory = async () => {
     try {
       const response = await axios.get(
-        `${API_URL}/api/v1/category?search=${searchValue}`
+        `${API_URL}/api/v1/category?page=${page}&limit=5&search=${searchValue}`
       );
       if (response) {
         setDataCategory(response?.data);
@@ -38,7 +41,7 @@ const CategoryProvider = ({ children }: { children: ReactNode }) => {
 
   React.useEffect(() => {
     fetchCategory();
-  }, [searchValue]);
+  }, [searchValue, page]);
 
   const context = React.useMemo(() => {
     return {

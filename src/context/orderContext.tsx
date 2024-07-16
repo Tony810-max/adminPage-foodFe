@@ -1,5 +1,6 @@
 import { API_URL, IOderMain } from "@/types/common";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 interface IOrderContext {
@@ -22,12 +23,14 @@ const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [dataOrder, setDataOrder] = React.useState<IOderMain>();
   const [tabCurr, setTabCurr] = React.useState("processing");
   const [searchValue, setSearchValue] = React.useState<string>("");
+  const search = useSearchParams();
+  const page = search.get("page");
 
   const fetchOrders = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
       const response = await axios.get(
-        `${API_URL}/api/v1/orders?status=${tabCurr}&search=${searchValue}`,
+        `${API_URL}/api/v1/orders?status=${tabCurr}&page=${page}&limit=5&search=${searchValue}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -43,7 +46,7 @@ const OrderProvider = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     fetchOrders();
-  }, [tabCurr, searchValue]);
+  }, [tabCurr, searchValue, page]);
 
   const context = React.useMemo(() => {
     return {

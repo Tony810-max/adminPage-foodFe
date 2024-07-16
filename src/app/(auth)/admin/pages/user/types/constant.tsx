@@ -1,12 +1,29 @@
 export const DATA_TAB = [
   {
-    name: "actived",
+    name: "user actived",
     value: true,
   },
   {
-    name: "not actived",
+    name: "user not actived",
     value: false,
   },
 ];
 
-export const DATA_TAB_ADMIN = ["list user deleted", "administrator list"];
+export const DATA_TAB_ADMIN = [
+  {
+    name: "user delete actived",
+    value: true,
+  },
+  {
+    name: "user delete not actived",
+    value: false,
+  },
+  {
+    name: "admin actived",
+    value: true,
+  },
+  {
+    name: "admin not actived",
+    value: false,
+  },
+];

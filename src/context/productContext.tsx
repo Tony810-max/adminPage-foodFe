@@ -1,6 +1,7 @@
 "use client";
 import { API_URL, IProductMain } from "@/types/common";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 interface IProduct {
@@ -18,10 +19,14 @@ export const ProductContext = React.createContext<IProduct>({
 const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const [dataProduct, setDataProduct] = React.useState<IProductMain>();
   const [searchValue, setSearchValue] = React.useState<string>("");
+
+  const search = useSearchParams();
+  const page = search.get("page");
+
   const fetchProduct = async () => {
     try {
       const response = await axios.get(
-        `${API_URL}/api/v1/products?search=${searchValue}`
+        `${API_URL}/api/v1/products?search=${searchValue}&page=${page}&limit=5`
       );
       if (response) {
         setDataProduct(response?.data);
@@ -32,7 +37,7 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   };
   React.useEffect(() => {
     fetchProduct();
-  }, [searchValue]);
+  }, [searchValue, page]);
 
   const context = React.useMemo(() => {
     return {

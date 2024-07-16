@@ -32,7 +32,7 @@ const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
       style={{ width: !opened ? "0" : "100%" }}
     >
       {data?.map((item) => (
-        <Link href={item?.to} key={item?.id}>
+        <Link href={`${item?.to}?page=1`} key={item?.id}>
           <Button
             variant={"outline"}
             className={cn(

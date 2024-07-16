@@ -9,6 +9,7 @@ interface ITab {
   tabAdmin: string;
   onSetTabCurr: (value: string) => void;
   onSetTabAdmin: (value: string) => void;
+  onSetActiveDelete: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TabUser: React.FC<ITab> = ({
@@ -16,6 +17,7 @@ const TabUser: React.FC<ITab> = ({
   tabCurr,
   onSetTabAdmin,
   tabAdmin,
+  onSetActiveDelete
 }) => {
   const active = React.useContext(UserContext);
   const onSetActive = active?.setActive;
@@ -25,7 +27,7 @@ const TabUser: React.FC<ITab> = ({
       onSetTabCurr(tabName);
       onSetTabAdmin(tabName);
       onSetActive?.(DATA_TAB.find((tab) => tab.name === tabName)?.value);
-    } else if (DATA_TAB_ADMIN.includes(tabName)) {
+    } else if (DATA_TAB_ADMIN.map((admin) => admin.name.includes("admin"))) {
       onSetTabAdmin(tabName);
       onSetTabCurr(tabName);
       onSetActive(true);
@@ -48,14 +50,14 @@ const TabUser: React.FC<ITab> = ({
       ))}
       {DATA_TAB_ADMIN?.map((tabAdminCurr) => (
         <Button
-          key={tabAdminCurr}
+          key={tabAdminCurr?.name}
           variant="outline"
-          onClick={() => handleTabClick(tabAdminCurr)}
+          onClick={() => handleTabClick(tabAdminCurr?.name)}
           className={cn("font-sans text-sm capitalize", {
-            "bg-red-600 text-white": tabAdminCurr === tabAdmin,
+            "bg-red-600 text-white": tabAdminCurr?.name === tabAdmin,
           })}
         >
-          {tabAdminCurr}
+          {tabAdminCurr?.name}
         </Button>
       ))}
     </div>

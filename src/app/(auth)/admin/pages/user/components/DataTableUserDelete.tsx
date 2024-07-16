@@ -14,9 +14,16 @@ import { API_URL, IUsers } from "@/types/common";
 import { Badge } from "@/components/ui/badge";
 import InfoUserDialog from "./InfoUserDialog";
 import AlertDialogRestoreUser from "./AlertDialogDeleteUser";
+import { useSearchParams } from "next/navigation";
 
-const DataTableUserDelete = () => {
+interface IDelete {
+  activeDelte: boolean;
+}
+
+const DataTableUserDelete: React.FC<IDelete> = ({ activeDelte }) => {
   const [dataUserDelete, setDataUserDelete] = React.useState<IUsers>();
+  const search = useSearchParams();
+  const page = search.get("page");
 
   const fetchDataUserDelete = async () => {
     try {

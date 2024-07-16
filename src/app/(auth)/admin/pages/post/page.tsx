@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import axios from "axios";
 import { API_URL, IPostMain } from "@/types/common";
 import SearchPost from "./components/SearchPost";
+import { useSearchParams } from "next/navigation";
 
 export type tab = {
   title: string;
@@ -26,14 +27,15 @@ const DATA_TAB = [
 const PostPage = () => {
   const [tab, setTab] = React.useState<tab>(DATA_TAB[0]);
   const [dataPost, setDataPost] = React.useState<IPostMain>();
-  
   const [searchValue, setSearchValue] = React.useState<string>("");
+  const search = useSearchParams();
+  const page = search.get("page");
 
   const fetchPost = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
       const response = await axios.get(
-        `${API_URL}/api/v1/post?isApprove=${tab?.value}&search=${searchValue}`,
+        `${API_URL}/api/v1/post?isApprove=${tab?.value}&search=${searchValue}&page=${page}&limit=5`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -48,7 +50,7 @@ const PostPage = () => {
 
   React.useEffect(() => {
     fetchPost();
-  }, [tab, searchValue]);
+  }, [tab, searchValue, page]);
 
   return (
     <div>
@@ -69,7 +71,12 @@ const PostPage = () => {
         </div>
         <SearchPost onSetSearchValue={setSearchValue} />
       </div>
-      <TablePost dataPost={dataPost} fetchPost={fetchPost} tab={tab} />
+      <TablePost
+        dataPost={dataPost}
+        fetchPost={fetchPost}
+        tab={tab}
+        page={page}
+      />
     </div>
   );
 };

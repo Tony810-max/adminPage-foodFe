@@ -110,6 +110,7 @@ const ModalAddProduct: React.FC<IModalAddProduct> = ({ onSetOpen }) => {
       publisherId: filterPublisherId && filterPublisherId[0]?.id,
     };
 
+    toast.warn("Please wait, the product is being added.");
     await handleAddProduct(productData);
   };
 
