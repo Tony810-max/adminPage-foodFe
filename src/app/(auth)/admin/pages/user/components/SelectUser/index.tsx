@@ -21,7 +21,7 @@ const SelectUser: React.FC<ISelect> = ({ tabCurr, onSetTabCurr }) => {
       onValueChange={(value) => onSetTabCurr(value)}
       defaultValue="user actived"
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[180px] capitalize font-semibold">
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
       <SelectContent>

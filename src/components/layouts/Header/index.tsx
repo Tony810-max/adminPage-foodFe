@@ -32,11 +32,11 @@ const Header = () => {
   };
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex gap-2 justify-between items-center">
       <SidebarAdmin />
 
       <div className="flex justify-end items-center gap-1 w-full py-5">
-        <span className="font-sans text-lg font-semibold capitalize">
+        <span className="font-sans sm:text-lg font-semibold capitalize">
           Welcome back,
         </span>
 
@@ -44,7 +44,7 @@ const Header = () => {
           <DropdownMenuTrigger asChild className="flex items-center">
             <Button
               variant="outline"
-              className="capitalize font-sans text-base font-semibold"
+              className="capitalize font-sans text-sm sm:text-base font-semibold"
             >
               {user?.firstName} {user?.lastName}
               <ChevronDown size={18} />

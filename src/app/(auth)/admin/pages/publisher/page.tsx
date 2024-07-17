@@ -10,7 +10,7 @@ const PublisherPage = () => {
   return (
     <div className="space-y-3">
       <PublisheProvider>
-        <div className="flex justify-between">
+        <div className="flex gap-1 justify-between">
           <CreateDialogPublisher />
           <SearchPublisher />
         </div>

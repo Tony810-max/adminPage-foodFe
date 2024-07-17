@@ -15,12 +15,14 @@ interface originSidebarAdmin {
   data: sidebarItem[];
   valueParam: string;
   onSetValueParam: (value: string) => void;
+  onSetOpen: (value: boolean) => void;
 }
 
 const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
   data,
   onSetValueParam,
   valueParam,
+  onSetOpen,
 }) => {
   return (
     <motion.div
@@ -40,6 +42,7 @@ const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
               }
             )}
             onClick={() => {
+              onSetOpen(false);
               onSetValueParam(item?.name);
               localStorage.setItem("selectedItem", item?.name);
             }}

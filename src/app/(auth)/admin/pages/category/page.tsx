@@ -10,7 +10,7 @@ const CategoryPage = () => {
   return (
     <div className="space-y-3">
       <CategoryProvider>
-        <div className="flex justify-between">
+        <div className="flex gap-2 justify-between">
           <AddCategoryDialog />
           <SeachCategory />
         </div>

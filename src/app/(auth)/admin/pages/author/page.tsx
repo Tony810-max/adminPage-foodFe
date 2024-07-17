@@ -9,7 +9,7 @@ const AuthorPage = () => {
   return (
     <div className="space-y-4">
       <AuthorProvider>
-        <div className="flex items-center justify-between">
+        <div className="flex gap-1 items-center justify-between">
           <CreateAuthor />
           <SearchAuthor />
         </div>

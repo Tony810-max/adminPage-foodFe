@@ -65,6 +65,7 @@ export const DATA_SIDEBAR_ADMIN = [
 
 export default function SidebarAdmin() {
   const [valueParam, setValueParam] = React.useState<string>("Home");
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     const savedValueParam = localStorage.getItem("selectedItem");
@@ -74,7 +75,7 @@ export default function SidebarAdmin() {
   }, [valueParam]);
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <AlignJustify className="hover:cursor-pointer hover:opacity-70" />
       </SheetTrigger>
@@ -90,7 +91,7 @@ export default function SidebarAdmin() {
             />
           </div>
         </SheetHeader>
-        <ContentSheet />
+        <ContentSheet onSetOpen={setOpen} />
       </SheetContent>
     </Sheet>
   );

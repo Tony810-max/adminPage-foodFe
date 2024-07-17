@@ -29,7 +29,7 @@ const UserPage = () => {
   return (
     <div className="space-y-4">
       <UserProvider>
-        <div className="flex justify-between items-center">
+        <div className="flex gap-2 justify-between items-center">
           <SelectUser tabCurr={tabCurr} onSetTabCurr={setTabCurr} />
 
           <SearchUser tabCurr={tabCurr} />

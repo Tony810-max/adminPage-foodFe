@@ -5,7 +5,7 @@ import React from "react";
 
 export const useAdmin = () => {
   const [dataAdmin, setDataAdmin] = React.useState<IUsers>();
-  const [tab, setTab] = React.useState(true);
+  const [tab, setTab] = React.useState("true");
   const [searchValue, setSearchValue] = React.useState("");
   const search = useSearchParams();
   const page = search.get("page");

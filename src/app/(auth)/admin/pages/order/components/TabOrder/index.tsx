@@ -8,8 +8,9 @@ const TabOrder = () => {
   const context = React.useContext(OderContext);
   const tabCurr = context.tabCurr;
   const onSetTabCurr = context.setTabCurr;
+
   return (
-    <div>
+    <div className="hidden lg:block">
       {DATA_TAB?.map((tab) => (
         <Button
           key={tab}

@@ -7,25 +7,20 @@ import axios from "axios";
 import { API_URL, IPostMain } from "@/types/common";
 import SearchPost from "./components/SearchPost";
 import { useSearchParams } from "next/navigation";
+import SelectChild from "./components/SelectValue";
+import { DATA_TAB } from "./types/constant";
 
 export type tab = {
   title: string;
-  value: boolean;
+  value: string;
 };
 
-const DATA_TAB = [
-  {
-    title: "Approved",
-    value: true,
-  },
-  {
-    title: "UnApproved",
-    value: false,
-  },
-];
+
 
 const PostPage = () => {
-  const [tab, setTab] = React.useState<tab>(DATA_TAB[0]);
+  const [tab, setTab] = React.useState("true");
+  const [tabTitle, setTabTitle] = React.useState("Approved");
+
   const [dataPost, setDataPost] = React.useState<IPostMain>();
   const [searchValue, setSearchValue] = React.useState<string>("");
   const search = useSearchParams();
@@ -35,7 +30,7 @@ const PostPage = () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
       const response = await axios.get(
-        `${API_URL}/api/v1/post?isApprove=${tab?.value}&search=${searchValue}&page=${page}&limit=5`,
+        `${API_URL}/api/v1/post?isApprove=${tab}&search=${searchValue}&page=${page}&limit=5`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
@@ -54,27 +49,31 @@ const PostPage = () => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <div className="space-x-2 py-2">
-          {DATA_TAB?.map((tabData: tab) => (
+      <div className="flex items-center justify-between">
+        <div className="space-x-2 py-2 hidden sm:block">
+          {DATA_TAB?.map((tabData) => (
             <Button
               key={tabData.title}
               variant={"outline"}
-              onClick={() => setTab(tabData)}
+              onClick={() => {
+                setTabTitle(tabData.title);
+                setTab(tabData?.value);
+              }}
               className={cn("font-sans text-sm capitalize", {
-                "bg-red-500 text-white": tab === tabData,
+                "bg-red-500 text-white": tab === tabData.value,
               })}
             >
               {tabData?.title}
             </Button>
           ))}
         </div>
+        <SelectChild onSetTab={setTab} />
         <SearchPost onSetSearchValue={setSearchValue} />
       </div>
       <TablePost
         dataPost={dataPost}
         fetchPost={fetchPost}
-        tab={tab}
+        tabTitle={tabTitle}
         page={page}
       />
     </div>

@@ -15,7 +15,7 @@ const ProductPage = () => {
         <AuthorProvider>
           <PublisheProvider>
             <ProductProvider>
-              <div className="flex justify-between items-center">
+              <div className="flex gap-2 justify-between items-center">
                 <DialogAddProduct />
                 <SearchProduct />
               </div>

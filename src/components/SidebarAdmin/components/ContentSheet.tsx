@@ -4,7 +4,11 @@ import OriginSidebarAdmin from "./OriginSidebarAdmin";
 import { DATA_SIDEBAR_ADMIN } from "..";
 import { itemVariants } from "../types/const";
 
-const ContentSheet = () => {
+export interface IContentSheet {
+  onSetOpen: (value: boolean) => void;
+}
+
+const ContentSheet: React.FC<IContentSheet> = ({ onSetOpen }) => {
   const [valueParam, setValueParam] = React.useState<string>("Home");
 
   React.useEffect(() => {
@@ -33,40 +37,41 @@ const ContentSheet = () => {
   };
 
   return (
-      <main className="flex justify-center ">
-        <AnimatePresence>
-          <motion.aside
-            variants={sidebarVariants}
+    <main className="flex justify-center ">
+      <AnimatePresence>
+        <motion.aside
+          variants={sidebarVariants}
+          initial="closed"
+          animate="opened"
+          exit="opened"
+        >
+          <motion.div
+            className=" flex flex-col gap-4 py-4 items-center"
             initial="closed"
-            animate="opened"
+            animate="open"
             exit="opened"
+            variants={itemVariants}
           >
-            <motion.div
-              className=" flex flex-col gap-4 py-4 items-center"
-              initial="closed"
-              animate="open"
-              exit="opened"
-              variants={itemVariants}
-            >
-              <AnimatePresence>
-                <motion.aside
-                  key="sidebar"
-                  initial={{ width: 0 }}
-                  animate={{ width: 200 }}
-                  exit={{ width: 0 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                >
-                  <OriginSidebarAdmin
-                    valueParam={valueParam}
-                    onSetValueParam={setValueParam}
-                    data={DATA_SIDEBAR_ADMIN}
-                  />
-                </motion.aside>
-              </AnimatePresence>
-            </motion.div>
-          </motion.aside>
-        </AnimatePresence>
-      </main>
+            <AnimatePresence>
+              <motion.aside
+                key="sidebar"
+                initial={{ width: 0 }}
+                animate={{ width: 200 }}
+                exit={{ width: 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <OriginSidebarAdmin
+                  onSetOpen={onSetOpen}
+                  valueParam={valueParam}
+                  onSetValueParam={setValueParam}
+                  data={DATA_SIDEBAR_ADMIN}
+                />
+              </motion.aside>
+            </AnimatePresence>
+          </motion.div>
+        </motion.aside>
+      </AnimatePresence>
+    </main>
   );
 };
 

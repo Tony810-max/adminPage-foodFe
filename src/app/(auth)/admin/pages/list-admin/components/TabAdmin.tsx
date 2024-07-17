@@ -3,14 +3,14 @@ import { DATA_TAB_ADMIN } from "../constant/const";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface ITabAdmin {
-  onSetTab: React.Dispatch<React.SetStateAction<boolean>>;
-  tab: boolean;
+export interface ITabAdmin {
+  onSetTab: (value: string) => void;
+  tab?: string;
 }
 
 const TabAdmin: React.FC<ITabAdmin> = ({ onSetTab, tab }) => {
   return (
-    <div className="space-x-2">
+    <div className="space-x-2 hidden sm:block">
       {DATA_TAB_ADMIN?.map((tabAdmin) => (
         <Button
           variant={"secondary"}

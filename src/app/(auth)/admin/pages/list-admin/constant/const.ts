@@ -1,10 +1,10 @@
 export const DATA_TAB_ADMIN = [
   {
     name: "actived",
-    value: true,
+    value: "true",
   },
   {
     name: "not actived",
-    value: false,
+    value: "false",
   },
 ];

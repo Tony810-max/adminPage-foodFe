@@ -13,17 +13,16 @@ import { IPostMain } from "@/types/common";
 import AuthorDialogPost from "./AuthorDialogPost";
 import ToolTipPost from "./ToolTipPost";
 import CheckAlertDialog from "./CheckAlertDialog";
-import { tab } from "../page";
 import PaginationChild from "@/components/PaginationChild";
 
 interface ITable {
   dataPost?: IPostMain;
   fetchPost: () => void;
-  tab: tab;
+  tabTitle: string;
   page: string | null;
 }
 
-const TablePost: React.FC<ITable> = ({ dataPost, fetchPost, tab, page }) => {
+const TablePost: React.FC<ITable> = ({ dataPost, fetchPost, tabTitle, page }) => {
   const post = dataPost?.posts;
   const meta = dataPost?.meta;
 
@@ -45,7 +44,7 @@ const TablePost: React.FC<ITable> = ({ dataPost, fetchPost, tab, page }) => {
             <TableHead className="text-center font-sans text-base capitalize">
               author
             </TableHead>
-            {tab?.title === "UnApproved" ? (
+            {tabTitle === "UnApproved" ? (
               <TableHead className="text-center font-sans text-base capitalize">
                 Approve
               </TableHead>

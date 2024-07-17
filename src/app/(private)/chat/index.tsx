@@ -73,7 +73,7 @@ const ChatMessage = () => {
   return (
     <div>
       {open && (
-        <div className="min-w-96 fixed z-10 right-10 bottom-20 bg-white border">
+        <div className="min-w sm:min-w-96 fixed z-10 right-5 sm:right-10 bottom-20 bg-white border">
           <div className="flex justify-end w-full p-2">
             <XCircleIcon
               className="hover:opacity-50 hover:cursor-pointer"
@@ -116,22 +116,27 @@ const ChatMessage = () => {
                           </span>
                           <span className="block">{msg.text}</span>
                         </div>
-                        <p className="block text-xs text-gray-600">
-                          Sent at:{" "}
-                          {msg?.createdAt &&
-                            format(
-                              new Date(msg?.createdAt),
-                              "dd-MM-yyyy HH:mm"
-                            )}
-                        </p>
+                        <div className="flex flex-col sm:flex-row">
+                          <span className=" text-xs text-gray-600">
+                            Sent at:
+                          </span>
+                          <span className="text-xs text-gray-600">
+                            {msg?.createdAt &&
+                              format(
+                                new Date(msg?.createdAt),
+                                "dd-MM-yyyy HH:mm"
+                              )}
+                          </span>
+                        </div>
                       </div>
                     )}
                   </div>
                   {Number(msg.sender?.id) === Number(senderId) &&
                     !msg.deletedAt && (
                       <Button
+                        variant={"link"}
                         onClick={() => deleteMessage(msg.id)}
-                        className="ml-2"
+                        className="ml-2 text-red-600 hover:opacity-70"
                       >
                         Xóa
                       </Button>
