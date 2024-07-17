@@ -35,7 +35,7 @@ const CardAdmin: React.FC<ICardAdmin> = ({ userCount, dataAdmin }) => {
   }, [userCount]);
 
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
       <CardInfoAdmin
         value={userDay}
         title="New users count per day"
@@ -51,7 +51,6 @@ const CardAdmin: React.FC<ICardAdmin> = ({ userCount, dataAdmin }) => {
         title="total number of administrators"
         Icon={Shield}
       />
-      <CardInfoAdmin value="" title="" Icon={User} />
     </div>
   );
 };

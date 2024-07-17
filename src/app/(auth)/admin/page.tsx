@@ -18,7 +18,7 @@ const AdminPage = () => {
       <OrderProvider>
         <span className="font-sans text-lg font-bold uppercase">Dashboard</span>
         <CardAdmin userCount={userCount} dataAdmin={dataAdmin} />
-        <div className="grid grid-cols-4 gap-4">
+        <div className="md:grid grid-cols-4 gap-4">
           <ChartNewUsersPerDay onSetDay={setDay} userCount={userCount} />
           <ChartDailyRenevue />
         </div>

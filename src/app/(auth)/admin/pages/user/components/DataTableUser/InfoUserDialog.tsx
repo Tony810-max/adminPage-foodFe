@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormInfoUser from "./FormInfoUser";
-import { IInfoUser } from "../types/common";
+import { IInfoUser } from "../../types/common";
 import { Badge } from "@/components/ui/badge";
 
 const InfoUserDialog: React.FC<IInfoUser> = ({ user }) => {

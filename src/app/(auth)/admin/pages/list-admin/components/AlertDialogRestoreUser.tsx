@@ -11,29 +11,29 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { API_URL } from "@/types/common";
-import { IUserId } from "../types/common";
 import { toast } from "react-toastify";
-import { UserContext } from "@/context/userContext";
+import { IRestoreUser } from "../../user/types/common";
 
-const AddRoleDialog: React.FC<IUserId> = ({ idUser }) => {
-  const context = React.useContext(UserContext);
-  const fetchUser = context?.fetchUser;
-
-  const handleAddRole = async () => {
+const AlertDialogRestoreUser: React.FC<IRestoreUser> = ({
+  idUser,
+  fetchUser,
+}) => {
+  const handleRestoreUser = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
       const response = await axios.patch(
-        `${API_URL}/api/v1/user/${idUser}/add-role`,
-        {
-          role: "admin",
-        },
+        `${API_URL}/api/v1/user/restore/${idUser}`,
+        {},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
+
       if (response) {
-        toast.success("Role added successfully...!!!");
+        console.log(response);
+        toast.success("User restored successfully..!!!");
         fetchUser();
       }
     } catch (error) {
@@ -44,14 +44,17 @@ const AddRoleDialog: React.FC<IUserId> = ({ idUser }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="font-sans text-sm capitalize">
-          add role
+        <Button
+          variant="ghost"
+          className="font-sans text-sm capitalize text-red-600"
+        >
+          restore user
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure you want to make this person an administrator?
+            Are you sure you want to restore this user?
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
@@ -62,7 +65,7 @@ const AddRoleDialog: React.FC<IUserId> = ({ idUser }) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-600 text-white font-sans"
-            onClick={handleAddRole}
+            onClick={handleRestoreUser}
           >
             Continue
           </AlertDialogAction>
@@ -72,4 +75,4 @@ const AddRoleDialog: React.FC<IUserId> = ({ idUser }) => {
   );
 };
 
-export default AddRoleDialog;
+export default AlertDialogRestoreUser;

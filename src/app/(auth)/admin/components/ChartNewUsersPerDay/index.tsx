@@ -21,7 +21,7 @@ const ChartNewUsersPerDay: React.FC<IChartUser> = ({ onSetDay, userCount }) => {
 
   return (
     <div className="col-span-2">
-      <div className="flex gap-4 justify-end items-center">
+      <div className="flex flex-col sm:flex-row gap-4 justify-end items-center">
         <Label>Enter day for check</Label>
         <Input
           type="number"

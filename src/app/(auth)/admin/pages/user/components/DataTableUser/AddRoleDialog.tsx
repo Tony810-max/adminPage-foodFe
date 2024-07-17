@@ -14,24 +14,26 @@ import {
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { API_URL } from "@/types/common";
+import { IUserId } from "../../types/common";
 import { toast } from "react-toastify";
-import { IRestoreUser } from "../types/common";
+import { UserContext } from "@/context/userContext";
 
-const AlertDialogRestoreUser: React.FC<IRestoreUser> = ({
-  idUser,
-  fetchUser,
-}) => {
-  const handleRestoreUser = async () => {
+const AddRoleDialog: React.FC<IUserId> = ({ idUser }) => {
+  const context = React.useContext(UserContext);
+  const fetchUser = context?.fetchUser;
+
+  const handleAddRole = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
       const response = await axios.patch(
-        `${API_URL}/api/v1/user/restore/${idUser}`,
-        {},
+        `${API_URL}/api/v1/user/${idUser}/add-role`,
+        {
+          role: "admin",
+        },
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-
       if (response) {
-        toast.success("User restored successfully..!!!");
+        toast.success("Role added successfully...!!!");
         fetchUser();
       }
     } catch (error) {
@@ -42,17 +44,14 @@ const AlertDialogRestoreUser: React.FC<IRestoreUser> = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="ghost"
-          className="font-sans text-sm capitalize text-red-600"
-        >
-          restore user
+        <Button variant="ghost" className="font-sans text-sm capitalize">
+          add role
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure you want to restore this user?
+            Are you sure you want to make this person an administrator?
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
@@ -63,7 +62,7 @@ const AlertDialogRestoreUser: React.FC<IRestoreUser> = ({
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-600 text-white font-sans"
-            onClick={handleRestoreUser}
+            onClick={handleAddRole}
           >
             Continue
           </AlertDialogAction>
@@ -73,4 +72,4 @@ const AlertDialogRestoreUser: React.FC<IRestoreUser> = ({
   );
 };
 
-export default AlertDialogRestoreUser;
+export default AddRoleDialog;

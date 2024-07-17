@@ -12,26 +12,30 @@ import {
 import axios from "axios";
 import { API_URL, IUsers } from "@/types/common";
 import { Badge } from "@/components/ui/badge";
-import InfoUserDialog from "./InfoUserDialog";
-import AlertDialogRestoreUser from "./AlertDialogDeleteUser";
+import InfoUserDialog from "../DataTableUser/InfoUserDialog";
+import AlertDialogRestoreUser from "../../../list-admin/components/AlertDialogRestoreUser";
 import { useSearchParams } from "next/navigation";
 
 interface IDelete {
-  activeDelte: boolean;
+  tabCurr: string;
 }
 
-const DataTableUserDelete: React.FC<IDelete> = ({ activeDelte }) => {
+const DataTableUserDelete: React.FC<IDelete> = ({ tabCurr }) => {
   const [dataUserDelete, setDataUserDelete] = React.useState<IUsers>();
   const search = useSearchParams();
   const page = search.get("page");
+  const check = tabCurr === "user delete actived" ? true : false;
 
   const fetchDataUserDelete = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
 
-      const response = await axios.get(`${API_URL}/api/v1/user/deleted`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const response = await axios.get(
+        `${API_URL}/api/v1/user/deleted?isActive=${check}&page=1&limit=5&search=5`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
       if (response) {
         setDataUserDelete(response?.data);
       }
@@ -42,7 +46,7 @@ const DataTableUserDelete: React.FC<IDelete> = ({ activeDelte }) => {
 
   React.useEffect(() => {
     fetchDataUserDelete();
-  }, []);
+  }, [tabCurr]);
 
   return (
     <Table>

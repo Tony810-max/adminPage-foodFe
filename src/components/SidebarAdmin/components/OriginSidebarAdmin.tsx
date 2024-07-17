@@ -15,21 +15,19 @@ interface originSidebarAdmin {
   data: sidebarItem[];
   valueParam: string;
   onSetValueParam: (value: string) => void;
-  opened: boolean;
 }
 
 const OriginSidebarAdmin: React.FC<originSidebarAdmin> = ({
   data,
   onSetValueParam,
   valueParam,
-  opened,
 }) => {
   return (
     <motion.div
       className=" flex flex-col gap-2 overflow-hidden"
-      animate={{ width: opened ? "100%" : "0" }}
+      animate={{ width: "100%" }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      style={{ width: !opened ? "0" : "100%" }}
+      style={{ width: "100%" }}
     >
       {data?.map((item) => (
         <Link href={`${item?.to}?page=1`} key={item?.id}>

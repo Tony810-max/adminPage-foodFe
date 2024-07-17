@@ -1,6 +1,6 @@
 import React from "react";
-import LabelInputUser from "./LabelInputUser";
-import { IInfoUser } from "../types/common";
+import LabelInputUser from "../LabelInputUser";
+import { IInfoUser } from "../../types/common";
 import { format } from "date-fns";
 
 const FormInfoUser: React.FC<IInfoUser> = ({ user }) => {

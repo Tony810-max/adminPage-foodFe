@@ -1,4 +1,5 @@
 "use client";
+import SidebarAdmin from "@/components/SidebarAdmin";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,9 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { IUser } from "@/types/common";
 
-import { ROUTERS } from "@/types/routers";
 import { ChevronDown } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -33,36 +32,40 @@ const Header = () => {
   };
 
   return (
-    <div className="flex justify-end items-center gap-1 w-full py-5">
-      <span className="font-sans text-lg font-semibold capitalize">
-        Welcome back,
-      </span>
+    <div className="flex justify-between items-center">
+      <SidebarAdmin />
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild className="flex items-center">
-          <Button
-            variant="outline"
-            className="capitalize font-sans text-base font-semibold"
-          >
-            {user?.firstName} {user?.lastName}
-            <ChevronDown size={18} />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuRadioGroup>
-            <DropdownMenuRadioItem value="top">
-              Change Password
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem
-              value="bottom"
-              className="cursor-pointer text-base font-sans font-semibold"
-              onClick={handleLogout}
+      <div className="flex justify-end items-center gap-1 w-full py-5">
+        <span className="font-sans text-lg font-semibold capitalize">
+          Welcome back,
+        </span>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild className="flex items-center">
+            <Button
+              variant="outline"
+              className="capitalize font-sans text-base font-semibold"
             >
-              Logout
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+              {user?.firstName} {user?.lastName}
+              <ChevronDown size={18} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuRadioGroup>
+              <DropdownMenuRadioItem value="top">
+                Change Password
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem
+                value="bottom"
+                className="cursor-pointer text-base font-sans font-semibold"
+                onClick={handleLogout}
+              >
+                Logout
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 };

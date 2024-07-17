@@ -67,7 +67,7 @@ const ChatMessage = () => {
   };
 
   const deleteMessage = (msgId: number) => {
-    socket.emit("deleteMessage", msgId);
+    socket.emit("deleteMessage", { msgId });
   };
 
   return (

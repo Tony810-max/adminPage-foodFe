@@ -14,27 +14,24 @@ import {
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { API_URL } from "@/types/common";
-import { IUserId } from "../types/common";
 import { UserContext } from "@/context/userContext";
 import { toast } from "react-toastify";
+import { IDeleteUser } from "../../types/common";
 
-const RemoveRoleDialog: React.FC<IUserId> = ({ idUser }) => {
+const BanUserDialog: React.FC<IDeleteUser> = ({ idUser }) => {
   const context = React.useContext(UserContext);
   const fetchUser = context?.fetchUser;
 
-  const handleRemoveRole = async () => {
+  const handleDeleteUser = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken")!);
-      const response = await axios.patch(
-        `${API_URL}/api/v1/user/${idUser}/remove-role`,
-        {
-          role: "admin",
-        },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
+      const response = await axios.delete(`${API_URL}/api/v1/user/${idUser}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
       if (response) {
-        toast.success("Role removed successfully");
         fetchUser();
+        toast.success("Deleted user successfully...!!!");
       }
     } catch (error) {
       console.error(error);
@@ -44,14 +41,17 @@ const RemoveRoleDialog: React.FC<IUserId> = ({ idUser }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="font-sans text-sm capitalize">
-          remove role
+        <Button
+          variant="ghost"
+          className="font-sans text-sm capitalize text-red-600"
+        >
+          delete user
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure you want to delete this administrator?
+            Are you sure you want to delete this user?
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
@@ -62,7 +62,7 @@ const RemoveRoleDialog: React.FC<IUserId> = ({ idUser }) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-600 text-white font-sans"
-            onClick={handleRemoveRole}
+            onClick={handleDeleteUser}
           >
             Continue
           </AlertDialogAction>
@@ -72,4 +72,4 @@ const RemoveRoleDialog: React.FC<IUserId> = ({ idUser }) => {
   );
 };
 
-export default RemoveRoleDialog;
+export default BanUserDialog;

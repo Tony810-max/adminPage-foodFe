@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Table,
@@ -10,12 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import InfoUserDialog from "./InfoUserDialog";
-import { useAdmin } from "@/hook/useAdmin";
+import InfoUserDialog from "../../user/components/DataTableUser/InfoUserDialog";
+import { IUser } from "@/types/common";
 
-const DataTableAdmin = () => {
-  const { dataAdmin } = useAdmin();
+interface ITableDataAdmin {
+  dataAdmin?: IUser[];
+}
 
+const TableDataAdmin: React.FC<ITableDataAdmin> = ({ dataAdmin }) => {
   return (
     <Table>
       <TableCaption>A list of your admin.</TableCaption>
@@ -39,7 +40,7 @@ const DataTableAdmin = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {dataAdmin?.users?.map((admin) => (
+        {dataAdmin?.map((admin) => (
           <TableRow key={admin?.id}>
             <TableCell className="font-sans text-sm text-center capitalize">
               {admin?.id}
@@ -80,4 +81,4 @@ const DataTableAdmin = () => {
   );
 };
 
-export default DataTableAdmin;
+export default TableDataAdmin;

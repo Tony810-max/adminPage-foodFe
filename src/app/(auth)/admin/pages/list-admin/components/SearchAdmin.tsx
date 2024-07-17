@@ -1,31 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UserContext } from "@/context/userContext";
 import React from "react";
 
-interface ISearch {
-  tabCurr: string;
+interface ISearchAdmin {
+  onSetSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SearchUser: React.FC<ISearch> = ({ tabCurr }) => {
+const SearchAdmin: React.FC<ISearchAdmin> = ({ onSetSearch }) => {
   const [search, setSearch] = React.useState<string>("");
-  const userContext = React.useContext(UserContext);
-  const onSetSearchValue = userContext.setSearchValue;
-  console.log(tabCurr);
 
-  const handleSearchUser = () => {
-    onSetSearchValue(search);
-  };
-
-  const handleClearSearch = () => {
-    setSearch("");
-    onSetSearchValue("");
+  const handleSearchAuthor = () => {
+    onSetSearch(search);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleSearchUser();
+      handleSearchAuthor();
     }
+  };
+
+  const handleClearSearch = () => {
+    setSearch("");
+    onSetSearch("");
   };
 
   return (
@@ -47,7 +43,7 @@ const SearchUser: React.FC<ISearch> = ({ tabCurr }) => {
         <Button
           variant={"destructive"}
           className="font-sans text-sm"
-          onClick={handleSearchUser}
+          onClick={handleSearchAuthor}
         >
           Search
         </Button>
@@ -56,4 +52,4 @@ const SearchUser: React.FC<ISearch> = ({ tabCurr }) => {
   );
 };
 
-export default SearchUser;
+export default SearchAdmin;

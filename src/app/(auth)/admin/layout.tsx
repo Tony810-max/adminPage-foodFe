@@ -1,14 +1,12 @@
 import ChatMessage from "@/app/(private)/chat";
-import SidebarAdmin from "@/components/SidebarAdmin";
 import Header from "@/components/layouts/Header";
 import React, { Suspense } from "react";
+
 const layoutAdmin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <div>
+    <div className="px-4">
       <Suspense>
-        <div className="flex gap-10 min-h-screen pr-4">
-          <SidebarAdmin />
-
+        <div className="flex gap-2 sm:gap-10 min-h-screen pr-4">
           <div className="flex flex-col w-full h-full ">
             <Header />
             {children}

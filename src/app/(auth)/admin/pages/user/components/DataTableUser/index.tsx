@@ -12,7 +12,7 @@ import { UserContext } from "@/context/userContext";
 import InfoUserDialog from "./InfoUserDialog";
 import { Badge } from "@/components/ui/badge";
 import AddRoleDialog from "./AddRoleDialog";
-import RemoveRoleDialog from "./RemoveRoleDialog";
+import RemoveRoleDialog from "../../../list-admin/components/RemoveRoleDialog";
 import BanUserDialog from "./BanUserDialog";
 import { useSearchParams } from "next/navigation";
 import PaginationChild from "@/components/PaginationChild";
@@ -24,15 +24,21 @@ interface IDataUser {
 const DataTableUser: React.FC<IDataUser> = ({ tabCurr }) => {
   const context = React.useContext(UserContext);
   const dataUser = context?.users?.users;
+  const onSetActive = context?.setActive;
   const search = useSearchParams();
   const page = search.get("page");
 
   const meta = context?.users?.meta;
+
+  React.useEffect(() => {
+    tabCurr === "user actived" ? onSetActive(true) : onSetActive(false);
+  }, [tabCurr]);
+
   return (
     <>
       <Table>
         <TableCaption>
-          {tabCurr === "actived"
+          {tabCurr === "user actived"
             ? "A list of your user acitved."
             : "A list of your user not acitved."}
         </TableCaption>
@@ -98,7 +104,7 @@ const DataTableUser: React.FC<IDataUser> = ({ tabCurr }) => {
               <TableCell className="font-sans text-base text-center">
                 <InfoUserDialog user={user} />
               </TableCell>
-              {tabCurr === "actived" ? (
+              {tabCurr === "user actived" ? (
                 <TableCell className="font-sans text-base text-center">
                   {user?.roles?.includes("admin") ? (
                     <RemoveRoleDialog idUser={user?.id} />
