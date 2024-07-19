@@ -25,7 +25,7 @@ const SearchAdmin: React.FC<ISearchAdmin> = ({ onSetSearch }) => {
   };
 
   return (
-    <div className="flex gap-1">
+    <div className="flex flex-col md:flex-row gap-1 items-center">
       <Input
         placeholder="Enter name value user"
         value={search}

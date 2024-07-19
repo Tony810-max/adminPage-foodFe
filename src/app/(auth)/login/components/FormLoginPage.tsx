@@ -9,6 +9,8 @@ import axios from "axios";
 import { API_URL } from "@/types/common";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ROUTERS } from "@/types/routers";
 
 const FormLoginPage = () => {
   const [show, setShow] = useState(false);
@@ -65,7 +67,7 @@ const FormLoginPage = () => {
 
   return (
     <form
-      className="absolute border-r border-white flex flex-col gap-10 justify-center z-10 bg-white/10 backdrop-blur backdrop-filter h-full px-24"
+      className="absolute sm:min-w-[30rem] border-r border-white flex flex-col gap-10 justify-center z-10 bg-white/10 backdrop-blur backdrop-filter h-full px-24 space-y-4"
       onSubmit={handleSubmit(onSubmit)}
     >
       <span className="font-sans text-white font-black text-center text-3xl uppercase leading-normal py-3">
@@ -116,6 +118,12 @@ const FormLoginPage = () => {
           <p className="text-red-500 normal-case">{errors.password.message}</p>
         )}
       </div>
+      <Link
+        href={ROUTERS.FORGOTPASSWORD}
+        className="text-white flex justify-end hover:underline hover:cursor-pointer"
+      >
+        Forgot Password
+      </Link>
       <Button
         type="submit"
         variant="outline"

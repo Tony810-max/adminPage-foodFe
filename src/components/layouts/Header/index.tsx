@@ -9,8 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { IUser } from "@/types/common";
+import { ROUTERS } from "@/types/routers";
 
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -53,7 +55,12 @@ const Header = () => {
           <DropdownMenuContent className="w-56">
             <DropdownMenuRadioGroup>
               <DropdownMenuRadioItem value="top">
-                Change Password
+                <Link
+                  href={ROUTERS.CHANGEPASSWORD}
+                  className="cursor-pointer text-base font-sans font-semibold"
+                >
+                  Change Password
+                </Link>
               </DropdownMenuRadioItem>
               <DropdownMenuRadioItem
                 value="bottom"

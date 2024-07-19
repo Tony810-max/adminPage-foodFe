@@ -1,5 +1,9 @@
 export const API_URL = "https://phanhoangquoctu-datn-be.onrender.com";
 
+export interface ErrorResponse {
+  message: string;
+}
+
 export interface IUser {
   id: number;
   firstName: string;

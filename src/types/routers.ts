@@ -7,4 +7,7 @@ export const ROUTERS = {
   ROLEUSER: "/admin/pages/user/pages/RoleUser",
   CATEGORY: "/admin/pages/category",
   PRODUCT: "/admin/pages/product",
+  CHANGEPASSWORD: "/admin/pages/change-password",
+  FORGOTPASSWORD: "/forgot-password",
+  LOGIN: "/login",
 };

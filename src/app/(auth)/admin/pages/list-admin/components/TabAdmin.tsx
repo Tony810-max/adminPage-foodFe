@@ -10,7 +10,7 @@ export interface ITabAdmin {
 
 const TabAdmin: React.FC<ITabAdmin> = ({ onSetTab, tab }) => {
   return (
-    <div className="space-x-2 hidden sm:block">
+    <div className=" space-x-2 hidden sm:block">
       {DATA_TAB_ADMIN?.map((tabAdmin) => (
         <Button
           variant={"secondary"}
